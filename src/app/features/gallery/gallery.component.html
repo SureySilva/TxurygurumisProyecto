@@ -1,1 +1,6 @@
-<p>gallery works!</p>
+<div class="gallery">
+  <div class="gallery-item" *ngFor="let item of items$ | async">
+    <img [src]="item.imageUrl" [alt]="item.title" />
+    <h3>{{ item.title }}</h3>
+  </div>
+</div>
