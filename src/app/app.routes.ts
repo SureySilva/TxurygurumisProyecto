@@ -7,25 +7,25 @@ export const routes: Routes = [{
         .then(m => m.HomeComponent)
   },
   {
-    path: 'guides',
+    path: 'guias',
     loadComponent: () =>
       import('./features/guides/guides.component')
         .then(m => m.GuidesComponent)
   },
   {
-    path: 'gallery',
+    path: 'galeria',
     loadComponent: () =>
       import('./features/gallery/gallery.component')
         .then(m => m.GalleryComponent)
   },
   {
-    path: 'shop',
+    path: 'tienda',
     loadComponent: () =>
       import('./features/shop/shop.component')
         .then(m => m.ShopComponent)
   },
   {
-    path: 'contact',
+    path: 'contacto',
     loadComponent: () =>
       import('./features/contact/contact.component')
         .then(m => m.ContactComponent)

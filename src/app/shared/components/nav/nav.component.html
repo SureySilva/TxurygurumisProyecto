@@ -1,0 +1,20 @@
+<nav class="menu_principal">
+	
+	<ul>
+		<li><a [routerLinkActive]="['seleccionado']" [routerLinkActiveOptions]="{exact: true}"
+				[routerLink]="['/']" (click)="isOpen=false">Inicio</a></li>
+		<li class="dropdown">Guías
+			<button (click)="toggleMenu()"><img src="images/flecha-desplegable.png" alt="flecha"
+					class="flecha" /></button>
+			<div class="dropdown-content" [class.show]="isOpen">
+				<a [routerLinkActive]="['seleccionado']" [routerLink]="['/guias/materiales']">Materiales</a>
+				<a href="#">Puntadas</a>
+				<a href="#">Primeros pasos</a>
+			</div>
+		</li>
+
+		<li><a [routerLinkActive]="['seleccionado']" [routerLink]="['/galeria']" (click)="isOpen=false">Galería</a></li>
+		<li><a [routerLinkActive]="['seleccionado']" [routerLink]="['/patrones']" (click)="isOpen=false">Patrones gratis</a></li>
+		<li><a [routerLinkActive]="['seleccionado']" [routerLink]="['/tienda']" (click)="isOpen=false">Tienda</a></li>
+	</ul>
+</nav>

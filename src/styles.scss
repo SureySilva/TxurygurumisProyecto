@@ -1,1 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* You can add global styles to this file, and also import other style files */
+a.seleccionado {
+    text-shadow: rgb(179, 0, 255) 2px 2px 4px;
+}
+
+body{
+    background-color: #d0d0d0;
+    margin: 0;
+    height: 100vh;
+}
+.marca{
+    font-family:"Segoe Script";
+    color: #FFFF00;
+    text-shadow: #BA04FD 2px 2px 4px;
+}
