@@ -25,6 +25,12 @@ export const routes: Routes = [{
         .then(m => m.ShopComponent)
   },
   {
+    path: 'patrones',
+    loadComponent: () =>
+      import('./features/patterns/patterns.component')
+        .then(m => m.PatternsComponent)
+  },
+  {
     path: 'contacto',
     loadComponent: () =>
       import('./features/contact/contact.component')

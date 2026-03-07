@@ -1,1 +1,22 @@
-<p>home works!</p>
+<main>
+<aside>
+    <a [routerLink]="['/patrones']">
+    <h2>Novedades</h2>
+    <div *ngFor="let item of items$ | async" class="novedades">
+        <div class="novedad_bloque"> 
+            <div class=" novedad_info">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.subtitle }}</p>
+            </div>        
+            <img [src]="item.imageUrl" alt={{item.title}} /> 
+        </div>
+       
+    </div>
+</a>
+</aside>
+<section class="presentacion">
+    <h1>Bienvenido a Txurygurumis</h1><br>
+    <h4>En esta página podrás encontrar métodos y guías para introducirte en el mundo del amigurumi.<br>
+    En la sección de patrones encontrarás preciosos muñecos con sus indicaciones paso a paso,<br> ¿Te animas?</h4>
+</section>
+</main>

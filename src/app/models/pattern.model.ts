@@ -1,9 +1,11 @@
 export interface Pattern {
   id?: string;
   title: string;
-  materials: string;
+  subtitle: string;
+  materials: Array<string>;
+  abbreviations: Array<string>;
   description: string;
-  imageUrl: string;
+  imageUrl?: string;
   difficulty: 'Principiante' | 'Intermedio' | 'Avanzado';
   createdAt: Date;
 }
