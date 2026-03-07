@@ -1,0 +1,26 @@
+#carouselExampleCaptions{
+    margin: 3%;   
+}
+img{
+    width: 500px;
+    height:500px;
+    border-radius: 2%;
+
+}
+.carousel-inner{
+    width: 500px;
+    height:500px;
+    margin-left: calc(50% - 250px);;
+}
+.carousel-control-next,
+.carousel-control-prev /*, .carousel-indicators */ {
+    filter: invert(100%);
+}
+
+.carousel-control-prev{
+    margin-left: calc(50% - 350px);
+   
+}
+.carousel-control-next{
+    margin-right: calc(50% - 350px);
+}

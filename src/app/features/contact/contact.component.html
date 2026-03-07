@@ -1,1 +1,54 @@
-<p>contact works!</p>
+<form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)" (reset)="onReset(contactForm)" novalidate>
+  <p>¿Tienes alguna duda o petición?</p>
+  <p>¡Ponte en contacto con nosotros!</p>
+
+  <!-- Nombre -->
+  <div>
+    <label for="name">Nombre:</label>
+    <input type="text" id="name" name="name" ngModel required minlength="2">
+    <div *ngIf="contactForm.controls['name']?.invalid && contactForm.controls['name']?.touched">
+      <small *ngIf="contactForm.controls['name']?.errors?.['required']">*Campo obligatorio</small>
+      <small *ngIf="contactForm.controls['name']?.errors?.['minlength']">Debe tener al menos 2 caracteres</small>
+    </div>
+  </div>
+
+  <!-- Apellidos -->
+  <div>
+    <label for="subname">Apellidos:</label>
+    <input type="text" id="subname" name="subname" ngModel required minlength="2">
+    <div *ngIf="contactForm.controls['subname']?.invalid && contactForm.controls['subname']?.touched">
+      <small *ngIf="contactForm.controls['subname']?.errors?.['required']">*Campo obligatorio</small>
+      <small *ngIf="contactForm.controls['subname']?.errors?.['minlength']">Debe tener al menos 2 caracteres</small>
+    </div>
+  </div>
+
+  <!-- Email -->
+  <div>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" ngModel required email>
+    <div *ngIf="contactForm.controls['email']?.invalid && contactForm.controls['email']?.touched">
+      <small *ngIf="contactForm.controls['email']?.errors?.['required']">*Campo obligatorio</small>
+      <small *ngIf="contactForm.controls['email']?.errors?.['email']">Formato de email no válido</small>
+    </div>
+  </div>
+
+  <!-- Mensaje -->
+  <div>
+    <label for="message">Mensaje:</label>
+    <textarea id="message" name="message" ngModel required minlength="10" maxlength="500"></textarea>
+    <div *ngIf="contactForm.controls['message']?.invalid && contactForm.controls['message']?.touched">
+      <small *ngIf="contactForm.controls['message']?.errors?.['required']">*Campo obligatorio</small>
+      <small *ngIf="contactForm.controls['message']?.errors?.['minlength']">Debe tener al menos 10 caracteres</small>
+      <small *ngIf="contactForm.controls['message']?.errors?.['maxlength']">Máximo 500 caracteres</small>
+    </div>
+  </div>
+
+  <!-- Botones -->
+  <button type="submit" [disabled]="!contactForm.valid">Enviar</button>
+  <button type="reset">Limpiar</button>
+</form>
+
+<!-- Mensaje de éxito -->
+<p class="mensaje" *ngIf="submitted">
+  Gracias por tu mensaje. Nos pondremos en contacto contigo pronto.
+</p>

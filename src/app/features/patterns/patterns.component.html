@@ -1,0 +1,32 @@
+<div *ngIf="items$ | async as items">
+    <div *ngFor="let item of items" class="item">
+        <div class="patron">
+            <h2>{{ item.title }}</h2>
+            <div class="introduccion">
+                <img [src]="item.imageUrl" [alt]="item.title" class="img-patron">
+                <div class="patron-materiales">
+                    <p>MATERIALES</p>
+                    <ul>
+                        <li *ngFor="let material of item.materials">{{ material }}</li>
+                    </ul>
+                    <p>ABREVIATURAS</p>
+                    <table>
+                        <tr *ngFor="let row of getRows(item.abbreviations, 2)">
+                            <td *ngFor="let item of row">
+                                {{ item }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>     
+            </div>
+            <div class="instrucciones">
+                <p [innerHTML]="item.description"></p>
+            </div>
+        </div>            
+    </div>
+</div>
+
+
+
+
+
