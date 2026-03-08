@@ -1,6 +1,72 @@
-<div *ngFor="let product of products">
-  <h3>{{ product.name }}</h3>
-  <p>{{ product.price }} €</p>
-  <button (click)="buy(product)">Comprar</button>
-</div>
+<div class="tienda">
 
+  <div class="botones">
+
+    <!-- BUSCADOR -->
+    <form class="d-flex" role="search" (submit)="$event.preventDefault()">
+      <input #searchInput class="form-control me-2" type="search" placeholder="Buscar en la tienda"
+        (input)="onSearch(searchInput.value)">
+      <button class="btn btn-outline-success" type="button">Buscar</button>
+    </form>
+
+
+    <!-- ORDENACIÓN -->
+    <div class="orden">
+
+      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-cart"
+        viewBox="0 0 16 16">
+        <path
+          d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4" />
+      </svg>
+
+      <button class="btn btn-sm"
+        [ngClass]="{'btn-success': activeButton === 'nuevo', 'btn-secondary': activeButton !== 'nuevo'}" type="button"
+        (click)="onSort('new'); activeButton='nuevo'">
+        Nuevo
+      </button>
+
+      <button class="btn btn-sm"
+        [ngClass]="{'btn-success': activeButton === 'menor', 'btn-secondary': activeButton !== 'menor'}" type="button"
+        (click)="onSort('price-asc'); activeButton='menor'">
+        Precio menor
+      </button>
+
+      <button class="btn btn-sm"
+        [ngClass]="{'btn-success': activeButton === 'mayor', 'btn-secondary': activeButton !== 'mayor'}" type="button"
+        (click)="onSort('price-desc'); activeButton='mayor'">
+        Precio mayor
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- PRODUCTOS -->
+  <div class="articulos">
+
+    <div *ngIf="filteredItems$ | async as items">
+
+      <div *ngIf="items.length == 0">
+        <p>No se han encontrado resultados</p>
+      </div>
+
+      <div *ngFor="let item of items" class="articulo">
+
+        <div class="articulo_bloque">
+
+          <img [src]="item.imageUrl" [alt]="item.alt" />
+
+          <h3>{{ item.title }}</h3>
+
+          <p>{{ item.price }}€</p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

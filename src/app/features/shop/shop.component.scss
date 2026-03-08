@@ -1,0 +1,58 @@
+.articulos{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: left;
+    margin-left: 3%;
+}
+.botones{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0px 2% 0px 2%;
+}
+.btn-secondary,svg {
+    margin: 3px;
+}
+.tienda{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content:  space-between;
+    margin: 3%;    
+}
+
+img{
+    width: 300px;
+    height: 300px;
+    margin: 15px 15px 0px 15px;
+}
+.articulo{
+    margin: 0px 10px 0px 10px;
+}
+.articulo_bloque{
+    display: flex;
+    flex-direction:column;
+    background-color: #fffafa;
+    width:fit-content;
+    align-items:left;
+    margin: 10px;
+    border-radius: 10px;
+}
+.btn-success{
+    background-color: #BA04FD;
+}
+.btn-outline-success:hover{
+    background-color: #BA04FD;
+}
+p{
+    font-size: large;
+    font-weight:bolder;
+    margin:5px 15px 5px;
+}
+h3{
+    font-weight:lighter; 
+    margin:5px 15px 5px; 
+}

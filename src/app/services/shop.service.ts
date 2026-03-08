@@ -1,5 +1,7 @@
-import { Injectable, inject } from '@angular/core';
-import { Functions, httpsCallable } from '@angular/fire/functions';
+import { Injectable } from '@angular/core';
+import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import { Product } from '../models/product.model';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -7,20 +9,10 @@ import { Functions, httpsCallable } from '@angular/fire/functions';
 })
 export class ShopService {
 
-  private functions = inject(Functions);
+  constructor(private firestore: Firestore) { }
 
-  async checkout(product: { name: string; price: number }) {
-    
-
-    const callable = httpsCallable(this.functions, 'createCheckoutSession');
-    const result: any = await callable({
-      name: product.name,
-      price: product.price
-    });
-
-
-
-
-  
+   getAll(): Observable<Product[]> {
+    const ref = collection(this.firestore, 'shop');
+    return collectionData(ref, { idField: 'id' }) as Observable<Product[]>;
   }
 }
