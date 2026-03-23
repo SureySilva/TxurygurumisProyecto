@@ -5,6 +5,8 @@ import { Product } from '../../models/product.model';
 import { Observable, Subject, BehaviorSubject, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
 import { FormsModule, NgModel } from '@angular/forms';
+import { Router } from '@angular/router';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-shop',
@@ -22,13 +24,21 @@ export class ShopComponent {
   private searchSubject = new Subject<string>();
   private sortSubject = new BehaviorSubject<string>('new');
   filteredItems$!: Observable<Product[]>;
+  hasItems = false;
+  cartCount = 0;
  
-   constructor(private shopService: ShopService) {
+   constructor(private shopService: ShopService,private router: Router,private cartService: CartService) {
      this.items$ = this.shopService.getAll();
+     
    }
+   
 
  
 ngOnInit(): void {
+  this.updateCartCount();
+  this.cartService.cart$.subscribe(items => {
+    this.hasItems = items.length > 0;
+  });
 
   const search$ = this.searchSubject.pipe(
     startWith(''),
@@ -69,11 +79,29 @@ ngOnInit(): void {
   );
 
 }
-
+updateCartCount() {
+  this.cartService.cart$.subscribe(items => {
+  this.cartCount = items.reduce((total, item) => total + item.quantity, 0);
+  this.hasItems = this.cartCount > 0;
+});
+}
 onSearch(value: string): void {
   this.searchSubject.next(value);
 }
 onSort(value: string): void {
   this.sortSubject.next(value);
+}
+/**
+ * Navega al detalle del producto enviando el objeto
+ */
+openProduct(item: Product): void {
+
+  this.router.navigate(['/product', item.id], {
+    state: { product: item }
+  });
+
+}
+gotoCart(): void {
+  this.router.navigate(['/carrito']);
 }
 }

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<div class="cart-container">
+  <h2>Carrito de compra</h2>
+  <div *ngIf="cartItems.length === 0">
+    <p>El carrito está vacío.</p>
+  </div>
+  <div *ngIf="cartItems.length > 0">
+    <table class="cart-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Producto</th>
+          <th *ngIf="hasColor">Color</th>
+          <th>Precio</th>
+          <th>Cantidad</th>
+          <!-- <th>Total</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of cartItems; let i = index" class="cart-item">
+          <td><img [src]="item.image" alt="{{ item.title }}" class="cart-item-image"></td>
+          <td>{{ item.title }}</td>
+          <td *ngIf="item.color">{{ item.color }}</td>
+          <td>{{ item.price }} €</td>
+          <td>
+            <button (click)="decreaseQuantity(i)"class="btn btn-sm me-2 btn-outline-secondary">-</button>     
+            {{ item.quantity }}
+            <button (click)="increaseQuantity(i)"class="btn btn-sm ms-2 btn-outline-secondary">+</button>
+          </td>
+          <!-- <td>{{ (item.price * item.quantity)}} €</td> -->        
+          <td><button (click)="removeFromCart(i)" class="btn btn-outline-warning btn-sm">Eliminar</button></td>
+        </tr>
+        <tr>
+
+            <td *ngIf="hasColor" colspan="8" class="cart-total"><h2>Total: {{ getTotal() }} €</h2></td>
+            <td *ngIf="!hasColor" colspan="7" class="cart-total">Total: {{ getTotal() }} €</td>
+
+        </tr>
+      </tbody>
+    </table>
+    <div class="cart-summary" >
+      <button (click)="purchase()" class="purchaseBtn btn btn-secondary">Pagar</button>
+    </div>
+  </div>
+</div>

@@ -16,6 +16,7 @@
 .btn-secondary,svg {
     margin: 3px;
 }
+
 .tienda{
     display: flex;
     flex-direction: column;
@@ -55,4 +56,22 @@ p{
 h3{
     font-weight:lighter; 
     margin:5px 15px 5px; 
+}
+.cart-icon {
+    position: relative;
+    display: inline-block; /* 👈 importante */
+    margin-right: 10px;
+    background-color: #d0d0d0;
+    border: 0px solid #BA04FD;
+}
+.cart-badge {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background-color: red;
+    color: white;
+    font-size: 10px;
+    padding: 2px 5px;
+    border-radius: 50%;
+    line-height: 1;
 }

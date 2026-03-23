@@ -15,4 +15,6 @@ export class ShopService {
     const ref = collection(this.firestore, 'shop');
     return collectionData(ref, { idField: 'id' }) as Observable<Product[]>;
   }
+
+  
 }

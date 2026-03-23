@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { ProductComponent } from './features/product/product.component';
 
 export const routes: Routes = [{
     path: '',
@@ -25,11 +26,19 @@ export const routes: Routes = [{
         .then(m => m.ShopComponent)
   },
   {
+    path: 'carrito',
+    loadComponent: () =>
+      import('./features/cart/cart.component')
+        .then(m => m.CartComponent)
+  },
+  {
     path: 'patrones',
     loadComponent: () =>
       import('./features/patterns/patterns.component')
         .then(m => m.PatternsComponent)
   },
+  { path: 'product/:id', component: ProductComponent },
+
   {
     path: 'contacto',
     loadComponent: () =>

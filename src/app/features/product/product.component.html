@@ -1,0 +1,43 @@
+<div *ngIf="product">
+  <div class="card">
+    <img [src]="product.imageUrl" [alt]="product.alt" />
+    <div class="card-body">
+      <h1>{{ product.title }}</h1>
+
+      <h3>Precio: {{ product.price }}€</h3>
+
+      <div class="color">
+        <p>Elige el color:</p>
+
+        <select [(ngModel)]="selectedVariantIndex" (ngModelChange)="onVariantChange($event)"
+          *ngIf="product.variants?.length">
+          <!-- <option *ngFor="let v of product.variants" ngValue="v" >
+            {{ v.color }} (Stock: {{ v.stock }})
+          </option> -->
+          <option *ngFor="let v of product.variants; let i = index" [ngValue]="i" [disabled]="v.stock === 0">
+
+            {{ v.color }}
+
+          </option>
+        </select>
+      </div>
+      <div *ngIf="selectedVariant">
+        <p>Stock disponible: {{ selectedVariant.stock }}</p>
+        <div class="quantity">
+          <label>Cantidad:</label>
+          <input type="number" [(ngModel)]="quantity" [min]="1" [max]="selectedVariant.stock"
+            (input)="checkQuantity($event)" />
+        </div>
+        <button (click)="addToCart()" [disabled]="selectedVariant.stock === 0 || quantity < 1">
+          Añadir al carrito
+        </button>
+      </div>
+      <div class="popup" *ngIf="showMessage">
+        ✔ Artículo añadido al carrito
+      </div>
+      <div class="popup error" *ngIf="errorMensage">
+        ❌ Cantidad solicitada excede el stock disponible
+      </div>
+    </div>
+  </div>
+</div>
