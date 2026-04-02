@@ -38,7 +38,9 @@ export const routes: Routes = [{
         .then(m => m.PatternsComponent)
   },
   { path: 'product/:id', component: ProductComponent },
-
+  {path: 'pattern-info/:id', 
+    loadComponent: () => import('./features/pattern-info/pattern-info.component')
+    .then(m => m.PatternInfoComponent)},
   {
     path: 'contacto',
     loadComponent: () =>

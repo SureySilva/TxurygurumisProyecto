@@ -13,7 +13,6 @@
           <th *ngIf="hasColor">Color</th>
           <th>Precio</th>
           <th>Cantidad</th>
-          <!-- <th>Total</th> -->
         </tr>
       </thead>
       <tbody>
@@ -26,8 +25,7 @@
             <button (click)="decreaseQuantity(i)"class="btn btn-sm me-2 btn-outline-secondary">-</button>     
             {{ item.quantity }}
             <button (click)="increaseQuantity(i)"class="btn btn-sm ms-2 btn-outline-secondary">+</button>
-          </td>
-          <!-- <td>{{ (item.price * item.quantity)}} €</td> -->        
+          </td>       
           <td><button (click)="removeFromCart(i)" class="btn btn-outline-warning btn-sm">Eliminar</button></td>
         </tr>
         <tr>

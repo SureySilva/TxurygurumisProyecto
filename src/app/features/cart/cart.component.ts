@@ -37,6 +37,7 @@ export class CartComponent {
     }
     this.cartItems = this.cartService.getCartItems();
   }
+  
   getTotal(): any {
     return this.cartService.getCartTotal();
   }

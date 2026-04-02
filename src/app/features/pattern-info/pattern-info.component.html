@@ -1,0 +1,25 @@
+<div *ngIf="pattern">
+    <div class="patron">
+        <h2>{{ pattern.title }}</h2>
+        <div class="introduccion">
+            <img [src]="pattern.imageUrl" [alt]="pattern.title" class="img-patron">
+            <div class="patron-materiales">
+                <p>MATERIALES</p>
+                <ul>
+                    <li *ngFor="let material of pattern.materials">{{ material }}</li>
+                </ul>
+                <p>ABREVIATURAS</p>
+                <table>
+                    <tr *ngFor="let row of getRows(pattern.abbreviations, 2)">
+                        <td *ngFor="let item of row">
+                            {{ item }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="instrucciones">
+            <p [innerHTML]="pattern.description"></p>
+        </div>
+    </div>
+</div>

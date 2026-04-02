@@ -42,6 +42,8 @@
       <small *ngIf="contactForm.controls['message']?.errors?.['maxlength']">Máximo 500 caracteres</small>
     </div>
   </div>
+  <!-- Bot -->
+  <input type="text" name="website" style="display:none">
 
   <!-- Botones -->
   <button type="submit" [disabled]="!contactForm.valid">Enviar</button>
@@ -51,4 +53,8 @@
 <!-- Mensaje de éxito -->
 <p class="mensaje" *ngIf="submitted">
   Gracias por tu mensaje. Nos pondremos en contacto contigo pronto.
+</p>
+<!-- Mensaje de error -->
+ <p class="error" *ngIf="errorMessage">
+  {{ errorMessage }}
 </p>

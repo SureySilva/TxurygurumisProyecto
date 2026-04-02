@@ -1,27 +1,11 @@
 <div *ngIf="items$ | async as items">
-    <div *ngFor="let item of items" class="item">
+    <div *ngFor="let item of items" class="item" class="listaPatrones">
         <div class="patron">
+            <img [src]="item.imageUrl" [alt]="item.title" class="img-patron">
             <h2>{{ item.title }}</h2>
-            <div class="introduccion">
-                <img [src]="item.imageUrl" [alt]="item.title" class="img-patron">
-                <div class="patron-materiales">
-                    <p>MATERIALES</p>
-                    <ul>
-                        <li *ngFor="let material of item.materials">{{ material }}</li>
-                    </ul>
-                    <p>ABREVIATURAS</p>
-                    <table>
-                        <tr *ngFor="let row of getRows(item.abbreviations, 2)">
-                            <td *ngFor="let item of row">
-                                {{ item }}
-                            </td>
-                        </tr>
-                    </table>
-                </div>     
-            </div>
-            <div class="instrucciones">
-                <p [innerHTML]="item.description"></p>
-            </div>
+            <p>{{item.subtitle}}</p>               
+            <p>Dificultad: {{item.difficulty}}</p>
+            <button class="grafico btn btn-secondary" (click)="viewPattern(item)">Ver patrón</button>   
         </div>            
     </div>
 </div>

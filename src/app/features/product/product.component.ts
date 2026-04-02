@@ -24,7 +24,6 @@ export class ProductComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private productService: ProductService,
     private cartService: CartService
   ) {
@@ -46,18 +45,7 @@ export class ProductComponent {
 
     });
   }
-
-  // onVariantChange(variant: Variant): void {
-  //   this.selectedVariant = variant;
-  //   console.log('Variante enviada:', variant.color);
-  //   console.log('Variante seleccionada:', this.selectedVariant.color);
-  //   // Reiniciar la cantidad si excede el stock de la nueva variante
-  //   if (this.quantity > variant.stock) {
-  //     this.quantity = variant.stock;
-  //   }
-
-  // }
-
+  
   onVariantChange(index: number): void {
 
     if (!this.product || !this.product.variants?.length) {
