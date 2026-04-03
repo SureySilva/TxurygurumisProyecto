@@ -41,6 +41,7 @@ button {
   display: inline-block;
 }
 
+
 .dropdown-content {
   display: none;/* Oculta el menú por defecto */
   position: absolute;
@@ -54,7 +55,7 @@ button {
   border-radius: 30px;
 }
 
-.dropdown-content a {
+.dropdown-content a{
   padding: 2px 16px;
   text-decoration: none;
   color: black;
@@ -65,3 +66,43 @@ button {
   display: inline-block;
   justify-content: space-around;
 }
+
+/********** Estilos para el menú de usuario **********/
+.user-dropdown {
+  position: relative;
+  display: block;
+}
+
+/* Cuando isOpen es true, muestra el menú */
+.dropdown-user-content.show {
+  display: block;
+}
+.dropdown-user-content a {
+  display: block;
+  padding: 2px ;
+  text-decoration: none;
+  color: black;
+}
+
+.dropdown-user-content a:hover,
+.dropdown-user-content button:hover {
+  text-shadow: 0 0 5px #BA04FD;
+  border-radius: 15px;
+}
+
+.dropdown-user-content {
+  display: none; /* Oculta el menú por defecto */
+  position: absolute;
+  top: calc(100% + 1px); /* Coloca el menú debajo del botón */
+  left: 50px;
+  background-color: #ece764af;
+  min-width: 150px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  white-space: nowrap; /* Evita el salto de línea */
+  border-radius: 30px;
+  padding: 2px 16px;
+}
+
+
+
