@@ -1,4 +1,58 @@
-/* You can add global styles to this file, and also import other style files */
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
+
+// Incluye core
+@include mat.core();
+
+// Tema M3
+$theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$violet-palette,
+    tertiary: mat.$yellow-palette,
+  ),
+));
+
+
+:root {
+  --primary: #BA04FD;
+  --accent: #ece764;
+  --bg: #d0d0d0;
+  // Aplica el tema
+@include mat.all-component-themes($theme);
+}
+
+.custom-dialog .mat-mdc-dialog-container .mdc-dialog__surface {
+  background: var(--bg);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 
+    0 10px 30px rgba(0,0,0,0.2),
+    0 0 20px var(--accent);
+  animation: fadeInScale 0.2s ease;
+}
+.cdk-overlay-backdrop {
+  backdrop-filter: blur(6px);
+  background: rgba(0,0,0,0.2);
+}
+
+
+/* Botón cancelar (más neutro) */
+.custom-dialog button[mat-button] {
+  color: #555;
+}
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 
 /* You can add global styles to this file, and also import other style files */
 a.seleccionado {
@@ -15,3 +69,6 @@ body{
     color: #FFFF00;
     text-shadow: #BA04FD 2px 2px 4px;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

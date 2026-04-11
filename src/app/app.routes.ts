@@ -52,14 +52,20 @@ export const routes: Routes = [{
 {
   path: 'login',
   loadComponent: () =>
-    import('./features/login/login.component')
+    import('./features/user/login/login.component')
       .then(m => m.LoginComponent)
 },
 {
   path: 'register',
   loadComponent: () =>
-    import('./features/register/register.component')
+    import('./features/user/register/register.component')
       .then(m => m.RegisterComponent)
+},
+{
+  path: 'reset-password',
+  loadComponent: () =>
+    import('./features/user/reset-password/reset-password.component')
+      .then(m => m.ResetPasswordComponent)
 }
 //   {
 //   path: 'admin',

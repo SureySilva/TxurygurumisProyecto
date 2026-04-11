@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../services/auth.service';
 import { NgIf } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { ErrorHandleService } from '../../services/error-handle.service';
+import { ErrorHandleService } from '../../../services/error-handle.service';
 
 @Component({
   standalone: true,
@@ -28,6 +28,7 @@ export class LoginComponent {
    * Si ocurre un error, muestra un mensaje de error utilizando el servicio de manejo de errores.
    */
   login() {
+    
     this.auth.login(this.email, this.password)
       .then(() => {
         console.log('Login correcto');
@@ -35,8 +36,8 @@ export class LoginComponent {
         
       })
       .catch(err => {
-        console.log(err);
-        this.error = this.errorHandler.getMessage(err.code);
+        console.log("Error login:", err);
+        this.error = this.errorHandler.getMessage(err);
       });
   }
   /**

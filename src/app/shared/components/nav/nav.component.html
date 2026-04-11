@@ -18,13 +18,14 @@
 				gratis</a></li>
 		<li><a [routerLinkActive]="['seleccionado']" [routerLink]="['/tienda']" (click)="isOpen=false; userMenuOpen=false">Tienda</a></li>
 		<li class="user-dropdown">
-			<div  *ngIf="user$ | async as user; else login">
+			<div  *ngIf="user; else login">
 				Bienvenido 
-				<button (click)="toggleUserMenu()">{{ user.displayName }}</button>
+				<button (click)="toggleUserMenu()">{{ user.name }}</button>
 				<div class="dropdown-user-content" [class.show]="userMenuOpen">
 					<a [routerLinkActive]="['seleccionado']" [routerLink]="['/perfil']" (click)="isOpen=false; userMenuOpen=false">Perfil</a>
 					<a [routerLinkActive]="['seleccionado']" [routerLink]="['/mis-pedidos']" (click)="isOpen=false; userMenuOpen=false">Mis pedidos</a>
 					<button (click)="logout()">Logout</button>
+					
 				</div>			
 			</div>
 			<ng-template #login>

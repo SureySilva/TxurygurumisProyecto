@@ -19,6 +19,7 @@ export class ErrorHandleService {
     "auth/user-not-found": "No existe el usuario",
     "auth/wrong-password": "Contraseña incorrecta",
     "functions/internal": "Error interno del servidor",
+    "Error: Verifica tu correo primero": "Verifica tu correo primero"
   };
   /**
    * Obtiene el mensaje de error correspondiente al código proporcionado

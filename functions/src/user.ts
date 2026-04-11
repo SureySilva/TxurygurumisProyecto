@@ -29,20 +29,72 @@ export const updateUser = onCall(async (request) => {
   return {success: true};
 });
 // Función para crear una cuenta de usuario
-export const createUserAccount = onCall(async (request) => {
-  const {email, password, name} = request.data;
+// export const createUserAccount = onCall(async (request) => {
+//   try {
+//     const {email, password, name} = request.data;
 
-  const userRecord = await admin.auth().createUser({
-    email,
-    password,
-  });
+//     const userRecord = await admin.auth().createUser({
+//       email,
+//       password,
+//     });
 
-  await admin.firestore().collection("users").doc(userRecord.uid).set({
-    name,
-    email,
-    createdAt: Date.now(),
-  });
+//     await admin.firestore().collection("users").doc(userRecord.uid).set({
+//       name,
+//       email,
+//       role: "user",
+//       createdAt: Date.now(),
+//     });
 
-  return {uid: userRecord.uid};
+//     return {uid: userRecord.uid};
+//   } catch (err: any) {
+//     console.error("Error creando usuario:", err);
+//     throw new Error(err.message || "Error al crear la cuenta");
+//   }
+// });
+// Función para crear una cuenta de usuario con Google
+export const syncUser = onCall(async (request) => {
+  console.log("AUTH UID:", request.auth?.uid);
+  const uid = request.auth?.uid;
+
+  if (!uid) {
+    throw new Error("No autenticado");
+  }
+
+  const user = await admin.auth().getUser(uid);
+
+  const userRef = admin.firestore().collection("users").doc(uid);
+  const doc = await userRef.get();
+
+  if (!doc.exists) {
+    await userRef.set({
+      name: user.displayName || "Usuario",
+      email: user.email,
+      role: "user",
+      createdAt: Date.now(),
+    });
+  }
+
+  return {success: true};
 });
 
+// Función para obtener el perfil del usuario
+export const getUserData = onCall(async (request) => {
+  try {
+    if (!request.auth) {
+      throw new Error("No autenticado");
+    }
+
+    const uid = request.auth.uid;
+
+    const doc = await admin.firestore().collection("users").doc(uid).get();
+
+    if (!doc.exists) {
+      throw new Error("Usuario no encontrado");
+    }
+
+    return doc.data();
+  } catch (error: any) {
+    console.error("ERROR getUserData:", error);
+    throw new Error(error.message || "Error obteniendo usuario");
+  }
+});

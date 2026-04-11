@@ -58,7 +58,7 @@ export const sendContact = onRequest(
         };
         // Limitar envíos por email (rate limiting)
         const now = Date.now();
-        const limitTime = 2 * 60 * 1000; // 2 minutos
+        const limitTime = 10 * 60 * 1000; // 10 minutos
 
         const lastMessage = await admin
           .firestore()

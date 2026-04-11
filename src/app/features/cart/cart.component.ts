@@ -1,48 +1,59 @@
 import { Component } from '@angular/core';
 import { CartService } from '../../services/cart.service';
-import { NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { observable } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
-  imports: [NgIf, NgFor],
+  standalone: true,
+  imports: [NgIf, NgFor, AsyncPipe],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss'
 })
 export class CartComponent {
 
-  cartItems: any[] = [];
+     cartItems$;
 
   constructor(private cartService: CartService) {
-    this.cartItems = this.cartService.getCartItems();
+     this.cartItems$ = this.cartService.cart$;
   }
+
   purchase() {
     throw new Error('Method not implemented.');
   }
+
   removeFromCart(index: number) {
     this.cartService.removeItem(index);
-    this.cartItems = this.cartService.getCartItems();
   }
+
   increaseQuantity(index: number) {
-    this.cartItems[index].quantity++;
-    this.cartService.updateItem(index, this.cartItems[index]);
-    this.cartItems = this.cartService.getCartItems();
+    const items = [...this.getSnapshot()];
+    items[index].quantity++;
+    this.cartService.updateItem(index, items[index]);
   }
+
   decreaseQuantity(index: number) {
-    if (this.cartItems[index].quantity > 1) {
-      this.cartItems[index].quantity--;
-      this.cartService.updateItem(index, this.cartItems[index]);
+    const items = [...this.getSnapshot()];
+
+    if (items[index].quantity > 1) {
+      items[index].quantity--;
+      this.cartService.updateItem(index, items[index]);
+    } else {
+      this.cartService.removeItem(index);
     }
-    else{
-      this.removeFromCart(index);
-    }
-    this.cartItems = this.cartService.getCartItems();
   }
-  
-  getTotal(): any {
+
+  getTotal() {
     return this.cartService.getCartTotal();
   }
 
   get hasColor(): boolean {
-  return this.cartItems?.some(item => item.color);
-}
+    return this.getSnapshot().some(item => item.color);
+  }
+
+  private getSnapshot(): any[] {
+    let value: any[] = [];
+    this.cartItems$.subscribe(v => value = v).unsubscribe();
+    return value;
+  }
 }

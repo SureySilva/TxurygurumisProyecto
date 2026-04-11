@@ -47,7 +47,7 @@ button {
   position: absolute;
   top: calc(100% + 1px);/* Coloca el menú debajo del botón */
   left: 0;
-  background-color: #ece76452;
+  background-color: #e6e389;
   min-width: 100%;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
   z-index: 10;
@@ -59,6 +59,10 @@ button {
   padding: 2px 16px;
   text-decoration: none;
   color: black;
+}
+.dropdown-content a:hover{
+  text-shadow: 0 0 5px #BA04FD;
+  border-radius: 15px;
 }
 
 /* Cuando isOpen es true, muestra el menú */
@@ -94,8 +98,8 @@ button {
   display: none; /* Oculta el menú por defecto */
   position: absolute;
   top: calc(100% + 1px); /* Coloca el menú debajo del botón */
-  left: 50px;
-  background-color: #ece764af;
+  right: 0;
+  background-color: #e6e389;
   min-width: 150px;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
   z-index: 10;
