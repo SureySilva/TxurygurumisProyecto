@@ -1,0 +1,12 @@
+<div custom-dialog> 
+
+
+<h2 style="color:#BA04FD;">{{ data.title }}</h2>
+
+<p>{{ data.message }}</p>
+
+<div style="display:flex; justify-content:flex-end; gap:10px;">
+  <button mat-button (click)="cancel()">Cancelar</button>
+  <button  mat-raised-button  (click)="confirm()">Aceptar</button>
+</div>
+</div>

@@ -7,6 +7,7 @@ import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operato
 import { FormsModule, NgModel } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CartService } from '../../services/cart.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-shop',
@@ -27,7 +28,9 @@ export class ShopComponent {
   hasItems = false;
   cartCount = 0;
  
-   constructor(private shopService: ShopService,private router: Router,private cartService: CartService) {
+   constructor(private shopService: ShopService,private router: Router,
+    private cartService: CartService, private authService: AuthService) 
+    {
      this.items$ = this.shopService.getAll();
      
    }
@@ -36,9 +39,7 @@ export class ShopComponent {
  
 ngOnInit(): void {
   this.updateCartCount();
-  this.cartService.cart$.subscribe(items => {
-    this.hasItems = items.length > 0;
-  });
+ 
 
   const search$ = this.searchSubject.pipe(
     startWith(''),

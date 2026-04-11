@@ -85,6 +85,7 @@ export class ProductComponent {
   addToCart(): void {
     if (!this.product || !this.selectedVariant) return;
     var items = this.cartService.getCartItems();
+
     var itemExists = items.some(item => item.productId === this.product?.id && item.color === this.selectedVariant?.color);
     for (let item of items) {
       if (item.productId === this.product.id && item.color === this.selectedVariant.color) {
