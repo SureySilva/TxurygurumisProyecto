@@ -1,0 +1,44 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+
+    //  Colección de contactos (formulario)
+    match /contacts/{doc} {
+      allow read: if false;
+      allow write: if false;
+    }
+    //  Colección de productos tienda
+    match /shop/{doc} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    //  Colección de productos tienda
+    match /patterns/{doc} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    //  Colección de galeria
+    match /gallery/{doc} {
+      allow read: if true;
+      allow write: if false;
+    }
+    //  Usuarios
+    match /users/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow create: if request.auth != null
+            && request.auth.uid == userId;
+
+      allow update: if request.auth != null
+            && request.auth.uid == userId
+            && !('role' in request.resource.data);
+    }
+
+    // (Opcional) otras colecciones
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

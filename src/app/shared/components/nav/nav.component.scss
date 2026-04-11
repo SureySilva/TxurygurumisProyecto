@@ -41,12 +41,13 @@ button {
   display: inline-block;
 }
 
+
 .dropdown-content {
   display: none;/* Oculta el menú por defecto */
   position: absolute;
   top: calc(100% + 1px);/* Coloca el menú debajo del botón */
   left: 0;
-  background-color: #ece76452;
+  background-color: #e6e389;
   min-width: 100%;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
   z-index: 10;
@@ -54,10 +55,14 @@ button {
   border-radius: 30px;
 }
 
-.dropdown-content a {
+.dropdown-content a{
   padding: 2px 16px;
   text-decoration: none;
   color: black;
+}
+.dropdown-content a:hover{
+  text-shadow: 0 0 5px #BA04FD;
+  border-radius: 15px;
 }
 
 /* Cuando isOpen es true, muestra el menú */
@@ -65,3 +70,43 @@ button {
   display: inline-block;
   justify-content: space-around;
 }
+
+/********** Estilos para el menú de usuario **********/
+.user-dropdown {
+  position: relative;
+  display: block;
+}
+
+/* Cuando isOpen es true, muestra el menú */
+.dropdown-user-content.show {
+  display: block;
+}
+.dropdown-user-content a {
+  display: block;
+  padding: 2px ;
+  text-decoration: none;
+  color: black;
+}
+
+.dropdown-user-content a:hover,
+.dropdown-user-content button:hover {
+  text-shadow: 0 0 5px #BA04FD;
+  border-radius: 15px;
+}
+
+.dropdown-user-content {
+  display: none; /* Oculta el menú por defecto */
+  position: absolute;
+  top: calc(100% + 1px); /* Coloca el menú debajo del botón */
+  right: 0;
+  background-color: #e6e389;
+  min-width: 150px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  white-space: nowrap; /* Evita el salto de línea */
+  border-radius: 30px;
+  padding: 2px 16px;
+}
+
+
+

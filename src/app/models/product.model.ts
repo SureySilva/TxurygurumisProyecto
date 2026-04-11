@@ -1,8 +1,13 @@
 export interface Product {
-  id?: string;
+  id?: number;
   title: string;
+  alt: string;
   description: string;
   imageUrl: string;
   price: number;
-  stock:number;
+  variants?: Variant[];
+}
+export interface Variant {
+  color: string;
+  stock: number;
 }

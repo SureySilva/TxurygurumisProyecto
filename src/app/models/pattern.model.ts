@@ -1,5 +1,5 @@
 export interface Pattern {
-  id?: string;
+  id?: number;
   title: string;
   subtitle: string;
   materials: Array<string>;

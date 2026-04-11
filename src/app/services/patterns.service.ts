@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Pattern } from '../models/pattern.model';
 import { combineLatest, map, Observable } from 'rxjs';
-import { Firestore, collection, collectionData} from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, doc, docData} from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PatternsService {
+  
 
    constructor(private firestore: Firestore) { }
   
-     getAll(): Observable<Pattern[]> {
+  getAll(): Observable<Pattern[]> {
 
   const patternsRef = collection(this.firestore, 'patterns');
   const galleryRef = collection(this.firestore, 'gallery');
@@ -45,4 +46,8 @@ getLatest(count: number = 2): Observable<Pattern[]> {
     })
   );
 }
+getPattern(id: string | null): Observable<Pattern> {
+    const productRef = doc(this.firestore, `patterns/${id}`);
+    return docData(productRef, { idField: 'id' }) as Observable<Pattern>;
+  }
 }

@@ -1,10 +1,5 @@
-import {onCall} from "firebase-functions/v2/https";
-import {logger} from "firebase-functions";
+import * as admin from "firebase-admin";
+admin.initializeApp();
 
-export const testFunction = onCall(async () => {
-  logger.info("Function llamada");
-
-  return {
-    message: "Firebase Functions funcionando correctamente",
-  };
-});
+export * from "./user";
+export {sendContact} from "./contact";
