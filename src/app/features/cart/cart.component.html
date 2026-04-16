@@ -1,10 +1,9 @@
-<!DOCTYPE html>
 <div class="cart-container" *ngIf="cartItems$ | async as cartItems">
   <h2>Carrito de compra</h2>
   <div *ngIf="cartItems.length === 0">
     <p>El carrito está vacío.</p>
   </div>
- <div *ngIf="cartItems.length > 0">
+  <div *ngIf="cartItems.length > 0">
     <table class="cart-table">
       <thead>
         <tr>
@@ -22,22 +21,50 @@
           <td *ngIf="item.color">{{ item.color }}</td>
           <td>{{ item.price }} €</td>
           <td>
-            <button (click)="decreaseQuantity(i)"class="btn btn-sm me-2 btn-outline-secondary">-</button>     
+            <button (click)="decreaseQuantity(i)" class="btn btn-sm me-2 btn-outline-secondary">-</button>
             {{ item.quantity }}
-            <button (click)="increaseQuantity(i)"class="btn btn-sm ms-2 btn-outline-secondary">+</button>
-          </td>       
+            <button (click)="increaseQuantity(i)" class="btn btn-sm ms-2 btn-outline-secondary">+</button>
+          </td>
           <td><button (click)="removeFromCart(i)" class="btn btn-outline-warning btn-sm">Eliminar</button></td>
         </tr>
         <tr>
 
-            <td *ngIf="hasColor" colspan="8" class="cart-total"><h2>Total: {{ getTotal() }} €</h2></td>
-            <td *ngIf="!hasColor" colspan="7" class="cart-total">Total: {{ getTotal() }} €</td>
+          <td *ngIf="hasColor" colspan="8" class="cart-total">
+            <h2>Total: {{ getTotal() }} €</h2>
+          </td>
+          <td *ngIf="!hasColor" colspan="7" class="cart-total">Total: {{ getTotal() }} €</td>
 
         </tr>
       </tbody>
     </table>
-    <div class="cart-summary" >
-      <button (click)="purchase()" class="purchaseBtn btn btn-secondary">Pagar</button>
+    <div *ngIf="!userData" class="loginPrompt">
+      <p>Inicia sesión para realizar tu compra.</p>
     </div>
+    <div class="buttons-container">
+      <div *ngIf="userData" class="cart-summary">
+        <button (click)="purchase()" class="purchaseBtn btn btn-secondary">Comprar</button>
+      </div>
+      <div class="cart-summary">
+        <button (click)="clearCart()" class="clearBtn btn btn-outline-danger">Vaciar carrito</button>
+      </div>
+    </div>
+    <div class="popup" *ngIf="showMessage">
+      ✔ Compra realizada con éxito.
+    </div>
+    <div class="popup" *ngIf="errorMessage">
+      ❌ Ha ocurrido un error. Inténtelo de nuevo en unos momentos.
+    </div>
+  </div>
+</div>
+<div class="shippingData" *ngIf="userData">
+  <div *ngIf="userData.address">
+  <h3>Datos de envío</h3>
+  <p>Nombre: {{ userData.name }}</p>
+  <p>Correo: {{ userData.email }}</p>
+  <p>Dirección: {{ userData.address }}</p>
+  </div>
+  <div *ngIf="!userData.address">
+    <h3>Datos de envío</h3>
+    <p>+ Añadir dirección de envío</p>
   </div>
 </div>

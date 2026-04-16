@@ -4,10 +4,10 @@ import { GoogleAuthProvider, onAuthStateChanged, sendPasswordResetEmail } from '
 import { Functions, httpsCallable } from '@angular/fire/functions';
 import { Observable } from 'rxjs';
 import { sendEmailVerification, createUserWithEmailAndPassword } from "firebase/auth";
-import { Firestore, collection, doc, setDoc, getDoc } from '@angular/fire/firestore';
-import { UserService } from './user.service';
+import { Firestore, doc, setDoc } from '@angular/fire/firestore';
 import { CartService } from './cart.service';
 import { ConfirmService } from './confirm.service';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -19,15 +19,16 @@ export class AuthService {
 
 
   constructor(private auth: Auth, private functions: Functions, private firestore: Firestore,
-    private userService: UserService, private cartService: CartService, private confirmService: ConfirmService
+    private router: Router, private cartService: CartService, private confirmService: ConfirmService
   ) {
     this.user$ = user(this.auth);
-    onAuthStateChanged(this.auth, (user) => {
+    onAuthStateChanged(this.auth, async (user) => {
        console.log("Auth state:", user);
     if (user?.uid) {
-      this.cartService.init(user.uid);
+      console.log("Usuario autenticado:", user.uid);
+      await this.cartService.mergeCartOnLogin(user.uid);
     } else {
-      this.cartService.clearCartState(); 
+      this.cartService.loadGuestCart(); 
     }
   });
   }
@@ -37,8 +38,9 @@ export class AuthService {
     try {
       const result = await createUserWithEmailAndPassword(this.auth, data.email, data.password);
       await setDoc(doc(this.firestore, "users", result.user.uid), {
-        name: data.displayName,
+        nickname: data.displayName,
         email: data.email,
+        addresses: [],
         role: "user",
         createdAt: Date.now(),
       });
@@ -79,23 +81,20 @@ export class AuthService {
     return await fn({});
   }
   // Logout
-  logout() {
+  logout(): void {
     //confirmar antes de cerrar sesión
 
   this.confirmService.ask("¿Seguro que quieres cerrar sesión?")
     .subscribe(async (ok) => {
       if (ok) {
         await signOut(this.auth);
-        
+        this.cartService.clearCartState();
+        this.router.navigate(['/']);
       }
     });
   }
 
-  // Función para actualizar el perfil del usuario
-  updateUser(data: any) {
-    const fn = httpsCallable(this.functions, 'updateUser');
-    return fn(data);
-  }
+  
 
   //Recuperar contraseña
   async sendPasswordResetEmail(email: string) {

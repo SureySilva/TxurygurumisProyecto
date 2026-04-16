@@ -27,13 +27,23 @@ service cloud.firestore {
     }
     //  Usuarios
     match /users/{userId} {
-      allow read: if request.auth != null && request.auth.uid == userId;
+      allow read: if isOwner(userId);
       allow create: if request.auth != null
             && request.auth.uid == userId;
 
       allow update: if request.auth != null
             && request.auth.uid == userId
             && !('role' in request.resource.data);
+    }
+
+    // Carrito
+    match /carts/{userId} {
+      allow read, create, update: if isOwner(userId);                  
+      allow delete: if isOwner(userId);
+    }
+
+    function isOwner(userId) {
+      return request.auth != null && request.auth.uid == userId;
     }
 
     // (Opcional) otras colecciones

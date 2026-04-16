@@ -66,7 +66,13 @@ export const routes: Routes = [{
   loadComponent: () =>
     import('./features/user/reset-password/reset-password.component')
       .then(m => m.ResetPasswordComponent)
-}
+},
+{
+  path: 'perfil',
+  loadComponent: () =>
+    import('./features/user/profile/profile.component')
+      .then(m => m.ProfileComponent)
+},
 //   {
 //   path: 'admin',
 //   loadComponent: () => import('./admin.component'),

@@ -3,7 +3,6 @@ import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { ErrorHandleService } from '../../../services/error-handle.service';
 import { AuthService } from '../../../services/auth.service';
-import { sendEmailVerification } from "firebase/auth";
 
 @Component({
   selector: 'app-register',

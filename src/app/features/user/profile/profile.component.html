@@ -1,1 +1,151 @@
-<p>profile works!</p>
+<div class="profile-page" *ngIf="profile$ | async as profile; else noSession">
+
+  <div class="profile-card">
+    <h1>Mi cuenta</h1>
+
+
+    <div class="profile-section">
+      <h2>Datos de la cuenta</h2>
+
+      <div class="info-row">
+        <span class="label">Correo electrónico</span>
+        <span class="value">{{ profile.email }}</span>
+      </div>
+
+      <div class="info-row nickname-row">
+        <span class="label">Nickname</span>
+        <div class="value nickname-block" *ngIf="!editNickname; else editNickTpl">
+          <span>{{ profile.nickname }}</span>
+          <button class="btn btn-outline-secondary btn-sm" type="button" (click)="startEditNickname(profile)">
+            Editar
+          </button>
+        </div>
+
+        <ng-template #editNickTpl>
+          <div class="nickname-edit">
+            <input type="text" [(ngModel)]="nicknameDraft" maxlength="30" placeholder="Nuevo nickname" />
+            <button class="btn btn-success btn-sm" type="button" [disabled]="isSaving" (click)="saveNickname()">
+              Guardar
+            </button>
+            <button class="btn btn-outline-danger btn-sm" type="button" [disabled]="isSaving"
+              (click)="cancelNicknameEdit()">
+              Cancelar
+            </button>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+    <div class="messages">
+      <p class="success-message" *ngIf="successMessage">{{ successMessage }}</p>
+      <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+    </div>
+
+    <div class="profile-section" *ngIf="profile.addresses">
+      <h2>Direcciones de envío</h2>
+
+      <div *ngIf="profile.addresses.length > 0; else noAddressTpl">
+        <div class="address-card" *ngFor="let address of profile.addresses; let i = index">
+          <h3>{{ address.name }}</h3>
+          <p><strong>Destinatario:</strong> {{ address.fullName }}</p>
+          <p><strong>Dirección:</strong> {{ address.street }}</p>
+          <p><strong>Ciudad:</strong> {{ address.city }}</p>
+          <p><strong>Código postal:</strong> {{ address.postalCode }}</p>
+          <p><strong>País:</strong> {{ address.country }}</p>
+          <p><strong>Teléfono:</strong> {{ address.phone }}</p>
+          <div class="actions">
+            <button class="btn btn-outline-secondary btn-sm" type="button" [disabled]="isSaving"
+              (click)="startEditAddress(i, address)">
+              Editar
+            </button>
+
+            <button class="btn btn-outline-danger btn-sm" type="button" [disabled]="isSaving"
+              (click)="removeAddress(profile, i)">
+              Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noAddressTpl>
+        <p>No tienes direcciones registradas.</p>
+      </ng-template>
+
+      <div class="actions" *ngIf="canAddAddress(profile)">
+        <button class="btn btn-outline-success" type="button" *ngIf="!showAddressForm" (click)="openAddressForm()">
+          Añadir nueva dirección
+        </button>
+      </div>
+
+      <div class="address-form" *ngIf="showAddressForm">
+        <h3>
+          {{ editingAddressIndex === null ? 'Nueva dirección' : 'Editar dirección' }}
+        </h3>
+
+        <div class="form-grid">
+          <div>
+            <label>Nombre de la dirección</label>
+            <input type="text" [(ngModel)]="newAddress.name" placeholder="Casa, Trabajo..." />
+          </div>
+
+          <div>
+            <label>Nombre completo</label>
+            <input type="text" [(ngModel)]="newAddress.fullName" />
+          </div>
+
+          <div class="full-width">
+            <label>Calle y número</label>
+            <input type="text" [(ngModel)]="newAddress.street" />
+          </div>
+
+          <div>
+            <label>Ciudad</label>
+            <input type="text" [(ngModel)]="newAddress.city" />
+          </div>
+
+          <div>
+            <label>Código postal</label>
+            <input type="text" [(ngModel)]="newAddress.postalCode" />
+          </div>
+
+          <div>
+            <label>País</label>
+            <input type="text" [(ngModel)]="newAddress.country" />
+          </div>
+
+          <div>
+            <label>Teléfono</label>
+            <input type="text" [(ngModel)]="newAddress.phone" />
+          </div>
+        </div>
+
+
+        <div class="actions">
+          <button class="btn btn-success" type="button" [disabled]="isSaving" (click)="saveAddress(profile)">
+            Guardar dirección
+          </button>
+          <button class="btn btn-outline-danger" type="button" [disabled]="isSaving" (click)="cancelAddressForm()">
+            Cancelar
+          </button>
+        </div>
+      </div>
+
+      <div class="messages">
+        <p class="success-message" *ngIf="successAddressMessage">{{ successAddressMessage }}</p>
+        <p class="error-message" *ngIf="errorAddressMessage">{{ errorAddressMessage }}</p>
+      </div>
+      <p class="address-limit" *ngIf="profile.addresses.length >= 2">
+        Has alcanzado el máximo de 2 direcciones de envío.
+      </p>
+    </div>
+  </div>
+</div>
+
+<ng-template #noSession>
+  <div class="profile-page">
+    <div class="profile-card">
+      <h1>No has iniciado sesión</h1>
+      <p>Accede con tu cuenta para ver tu perfil.</p>
+      <a routerLink="/login" class="btn btn-success">Iniciar sesión</a>
+    </div>
+  </div>
+</ng-template>

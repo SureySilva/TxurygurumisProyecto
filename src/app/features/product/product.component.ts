@@ -20,7 +20,7 @@ export class ProductComponent {
   selectedVariantIndex = 0;
   quantity: number = 1;
   showMessage = false;
-  errorMensage = false;
+  errorMessage = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -99,9 +99,9 @@ export class ProductComponent {
         }
         else {
           //Si supera el stock, mostramos mensaje de error
-          this.errorMensage = true;
+          this.errorMessage = true;
           setTimeout(() => {
-            this.errorMensage = false;
+            this.errorMessage = false;
           }, 2000);
         }
       }
@@ -112,10 +112,9 @@ export class ProductComponent {
         productId: this.product.id,
         image: this.product.imageUrl,
         title: this.product.title,
-        color: this.selectedVariant.color,
         price: this.product.price,
         quantity: this.quantity,
-        stock: this.selectedVariant.stock,
+        ...(this.selectedVariant.color ? { color: this.selectedVariant.color } : {})
       });
     }
     this.showMessage = true;

@@ -1,5 +1,9 @@
-
-.cart-container{
+.buttons-container{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+.cart-container, .shippingData{
     display: block flex;
     flex-direction: column;
     justify-content: center space-around;
