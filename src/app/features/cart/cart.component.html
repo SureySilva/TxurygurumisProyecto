@@ -15,17 +15,44 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of cartItems$ | async; let i = index" class="cart-item">
-          <td><img [src]="item.image" alt="{{ item.title }}" class="cart-item-image"></td>
-          <td>{{ item.title }}</td>
-          <td *ngIf="item.color">{{ item.color }}</td>
-          <td>{{ item.price }} €</td>
+        <tr *ngFor="let item of cartItems; let i = index" class="cart-item"
+          [class.disabled-item]="item.valid === false">
           <td>
-            <button (click)="decreaseQuantity(i)" class="btn btn-sm me-2 btn-outline-secondary">-</button>
-            {{ item.quantity }}
-            <button (click)="increaseQuantity(i)" class="btn btn-sm ms-2 btn-outline-secondary">+</button>
+            <img [src]="item.image" [alt]="item.title" class="cart-item-image">
           </td>
-          <td><button (click)="removeFromCart(i)" class="btn btn-outline-warning btn-sm">Eliminar</button></td>
+
+          <td>
+            {{ item.title }}
+            <p *ngIf="item.valid === false" class="stock-warning">
+              {{ item.stockMessage }}
+            </p>
+          </td>
+
+          <td *ngIf="item.color">{{ item.color }}</td>
+
+          <td>
+            <span *ngIf="item.valid !== false">{{ item.price }} €</span>
+            <span *ngIf="item.valid === false">No disponible</span>
+          </td>
+
+          <td>
+            <button (click)="decreaseQuantity(i)" class="btn btn-sm me-2 btn-outline-secondary">
+              -
+            </button>
+
+            {{ item.quantity }}
+
+            <button (click)="increaseQuantity(i)" class="btn btn-sm ms-2 btn-outline-secondary"
+              [disabled]="item.valid === false || item.quantity >= item.availableStock">
+              +
+            </button>
+          </td>
+
+          <td>
+            <button (click)="removeFromCart(i)" class="btn btn-outline-warning btn-sm">
+              Eliminar
+            </button>
+          </td>
         </tr>
         <tr>
 
@@ -41,30 +68,80 @@
       <p>Inicia sesión para realizar tu compra.</p>
     </div>
     <div class="buttons-container">
-      <div *ngIf="userData" class="cart-summary">
-        <button (click)="purchase()" class="purchaseBtn btn btn-secondary">Comprar</button>
-      </div>
       <div class="cart-summary">
         <button (click)="clearCart()" class="clearBtn btn btn-outline-danger">Vaciar carrito</button>
       </div>
     </div>
-    <div class="popup" *ngIf="showMessage">
-      ✔ Compra realizada con éxito.
-    </div>
-    <div class="popup" *ngIf="errorMessage">
-      ❌ Ha ocurrido un error. Inténtelo de nuevo en unos momentos.
-    </div>
+    <ng-container *ngIf="cartItems$ | async as cartItems">
+      <div *ngIf="userData && cartItems.length > 0">
+
+        <div class="shippingData">
+          <h3>Datos de envío</h3>
+
+          <div *ngIf="!userAddresses.length">
+            <p>No tienes direcciones guardadas.</p>
+            <button class="btn btn-outline-primary" (click)="goToProfile()">
+              Añadir dirección
+            </button>
+          </div>
+
+          <div *ngIf="userAddresses.length === 1">
+            <div class="address-card selected">
+              <p><strong>{{ userAddresses[0].name }}</strong></p>
+              <p>{{ userAddresses[0].fullName }}</p>
+              <p>{{ userAddresses[0].street }}</p>
+              <p>{{ userAddresses[0].postalCode }} {{ userAddresses[0].city }}</p>
+              <p>{{ userAddresses[0].country }}</p>
+            </div>
+
+            <button class="btn btn-outline-primary mt-2" (click)="goToProfile()">
+              Añadir dirección
+            </button>
+          </div>
+
+          <div *ngIf="userAddresses.length >= 2" class="address-list">
+            <label *ngFor="let address of userAddresses; let i = index" class="address-option">
+              <input type="radio" name="shippingAddress" [value]="i" [(ngModel)]="selectedAddress" />
+              <div class="address-card" [class.selected]="selectedAddress === i">
+                <p><strong>{{ address.name }}</strong></p>
+                <p>{{ address.fullName }}</p>
+                <p>{{ address.street}}</p>
+                <p>{{ address.postalCode }} {{ address.city }}</p>
+                <p>{{ address.country }}</p>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="paymentData">
+          <h3>Método de pago</h3>
+
+          <label>
+            <input type="radio" name="paymentMethod" value="card" [(ngModel)]="paymentMethod" />
+            Tarjeta
+          </label>
+
+          <label>
+            <input type="radio" name="paymentMethod" value="paypal" [(ngModel)]="paymentMethod" />
+            PayPal
+          </label>
+
+          <div *ngIf="paymentMethod === 'card'" class="card-form">
+            <input type="text" [(ngModel)]="cardData.name" placeholder="Nombre del titular" />
+            <input type="text" [(ngModel)]="cardData.number" placeholder="Número de tarjeta" />
+            <input type="text" [(ngModel)]="cardData.expiry" placeholder="MM/AA" />
+            <input type="text" [(ngModel)]="cardData.cvv" placeholder="CVV" />
+          </div>
+
+          <div *ngIf="paymentMethod === 'paypal'" class="paypal-box">
+            <p>Serás redirigido a PayPal para completar el pago.</p>
+          </div>
+        </div>
+        <div *ngIf="userData" class="cart-summary">
+          <button (click)="purchase()" class="purchaseBtn btn btn-secondary mt-3">Confirmar compra</button>
+        </div>
+      </div>
+    </ng-container>
   </div>
-</div>
-<div class="shippingData" *ngIf="userData">
-  <div *ngIf="userData.address">
-  <h3>Datos de envío</h3>
-  <p>Nombre: {{ userData.name }}</p>
-  <p>Correo: {{ userData.email }}</p>
-  <p>Dirección: {{ userData.address }}</p>
-  </div>
-  <div *ngIf="!userData.address">
-    <h3>Datos de envío</h3>
-    <p>+ Añadir dirección de envío</p>
-  </div>
+
 </div>

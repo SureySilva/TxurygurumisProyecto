@@ -36,7 +36,32 @@
     margin-bottom: 20px;
     padding-bottom: 20px;
 }
+.popup {
+    position: fixed;
+    bottom: 20px;
+    right: auto;
+    left: auto;
+    border: 2px solid #d0d0d0;
+    background-color: #BA04FD; 
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 1000;
+    animation: fadeInOut 2s ease;
+}
 .purchaseBtn:hover{
     background-color: #BA04FD;
 
+}
+.disabled-item {
+  opacity: 0.45;
+  background: #f3f3f3;
+}
+
+.stock-warning {
+  color: #b00020;
+  font-size: 0.9rem;
+  margin-top: 4px;
+  font-weight: 600;
 }

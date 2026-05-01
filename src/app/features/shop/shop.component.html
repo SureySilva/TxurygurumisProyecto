@@ -1,5 +1,5 @@
 <div class="tienda">
-
+  
   <div class="botones">
 
     <!-- BUSCADOR -->
@@ -32,23 +32,23 @@
 
       </button>
 
-        <button class="btn btn-sm"
-          [ngClass]="{'btn-success': activeButton === 'nuevo', 'btn-secondary': activeButton !== 'nuevo'}" type="button"
-          (click)="onSort('new'); activeButton='nuevo'">
-          Nuevo
-        </button>
+      <button class="btn btn-sm"
+        [ngClass]="{'btn-success': activeButton === 'nuevo', 'btn-secondary': activeButton !== 'nuevo'}" type="button"
+        (click)="onSort('new'); activeButton='nuevo'">
+        Nuevo
+      </button>
 
-        <button class="btn btn-sm"
-          [ngClass]="{'btn-success': activeButton === 'menor', 'btn-secondary': activeButton !== 'menor'}" type="button"
-          (click)="onSort('price-asc'); activeButton='menor'">
-          Precio menor
-        </button>
+      <button class="btn btn-sm"
+        [ngClass]="{'btn-success': activeButton === 'menor', 'btn-secondary': activeButton !== 'menor'}" type="button"
+        (click)="onSort('price-asc'); activeButton='menor'">
+        Precio menor
+      </button>
 
-        <button class="btn btn-sm"
-          [ngClass]="{'btn-success': activeButton === 'mayor', 'btn-secondary': activeButton !== 'mayor'}" type="button"
-          (click)="onSort('price-desc'); activeButton='mayor'">
-          Precio mayor
-        </button>
+      <button class="btn btn-sm"
+        [ngClass]="{'btn-success': activeButton === 'mayor', 'btn-secondary': activeButton !== 'mayor'}" type="button"
+        (click)="onSort('price-desc'); activeButton='mayor'">
+        Precio mayor
+      </button>
 
     </div>
 
@@ -56,25 +56,21 @@
 
 
   <!-- PRODUCTOS -->
-  <div class="articulos">
+  <div class="articulos" *ngIf="filteredItems$ | async as items">
 
-    <div *ngIf="filteredItems$ | async as items">
+    <div *ngIf="items.length == 0">
+      <p>No se han encontrado resultados</p>
+    </div>
 
-      <div *ngIf="items.length == 0">
-        <p>No se han encontrado resultados</p>
-      </div>
+    <div *ngFor="let item of items" class="articulo" (click)="openProduct(item)">
 
-      <div *ngFor="let item of items" class="articulo" (click)="openProduct(item)">
+      <div class="articulo_bloque">
 
-        <div class="articulo_bloque">
+        <img [src]="item.imageUrl" [alt]="item.alt" />
 
-          <img [src]="item.imageUrl" [alt]="item.alt" />
+        <h3>{{ item.title }}</h3>
 
-          <h3>{{ item.title }}</h3>
-
-          <p>{{ item.price }}€</p>
-
-        </div>
+        <p>{{ item.price }}€</p>
 
       </div>
 

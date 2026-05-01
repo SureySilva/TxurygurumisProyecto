@@ -9,21 +9,21 @@ service cloud.firestore {
       allow write: if false;
     }
     //  Colección de productos tienda
-    match /shop/{doc} {
+    match /products/{doc} {
       allow read: if true;
-      allow write: if false;
+      allow write: if isAdmin();
     }
 
-    //  Colección de productos tienda
+    //  Colección de patrones
     match /patterns/{doc} {
       allow read: if true;
-      allow write: if false;
+      allow write: if isAdmin();
     }
 
     //  Colección de galeria
     match /gallery/{doc} {
       allow read: if true;
-      allow write: if false;
+      allow write: if isAdmin();
     }
     //  Usuarios
     match /users/{userId} {
@@ -42,13 +42,26 @@ service cloud.firestore {
       allow delete: if isOwner(userId);
     }
 
+    //Pedidos
+    match /orders/{orderId} {
+      allow read: if request.auth != null && resource.data.uid == request.auth.uid;
+      allow write: if false;
+    }
+    
     function isOwner(userId) {
       return request.auth != null && request.auth.uid == userId;
+    }
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function isAdmin() {
+      return isSignedIn() &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
     }
 
     // (Opcional) otras colecciones
     match /{document=**} {
-      allow read, write: if false;
+      allow read, write: if isAdmin();
     }
   }
 }

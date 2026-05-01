@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
-import { ErrorHandleService } from '../../../services/error-handle.service';
+import { ErrorHandleService } from '../../../services/messages/error-handle.service';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({

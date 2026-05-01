@@ -1,5 +1,14 @@
 <div *ngIf="pattern">
+    <main class="link">
+        <app-breadcrumb [items]="[
+    { label: 'Inicio', url: '/' },
+    { label: 'Patrones', url: '/patrones' },
+    { label: pattern.title }
+    ]">
+        </app-breadcrumb>
+    </main>
     <div class="patron">
+
         <h2>{{ pattern.title }}</h2>
         <div class="introduccion">
             <img [src]="pattern.imageUrl" [alt]="pattern.title" class="img-patron">
@@ -19,7 +28,7 @@
             </div>
         </div>
         <div class="instrucciones">
-            <p [innerHTML]="pattern.description"></p>
+            <div class="descripcion" [innerHTML]="pattern.description"></div>
         </div>
     </div>
 </div>

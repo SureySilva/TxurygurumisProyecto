@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Auth, onAuthStateChanged } from '@angular/fire/auth';
+import { Auth, onAuthStateChanged, signOut } from '@angular/fire/auth';
 import { getDoc, doc, Firestore, docData } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
-import { BehaviorSubject, from, Observable, of, switchMap } from 'rxjs';
+import { BehaviorSubject, map, Observable, of, switchMap } from 'rxjs';
 import { ShippingAddress, UserProfile } from '../../models/user-profile.model';
 import { AuthService } from '../auth.service';
 
@@ -16,7 +16,17 @@ export class UserService {
   private currentUserSubject = new BehaviorSubject<any>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private functions: Functions, private firestore: Firestore, private auth: Auth, private authService: AuthService) {
+
+  /**
+   * Observable que indica si el usuario autenticado es administrador.
+   */
+  public isAdmin$: Observable<boolean> = this.currentUser$.pipe(
+    map((user) => user?.role === 'admin')
+  );
+
+  constructor(private functions: Functions, private firestore: Firestore,
+    private auth: Auth, private authService: AuthService,
+    ) {
     onAuthStateChanged(this.auth, async (userAuth) => {
       if (!userAuth) {
         console.log("No hay usuario autenticado");
@@ -85,4 +95,11 @@ export class UserService {
     await callable({ data });
   }
 
+  async deleteAccount(): Promise<void> {
+    const callable = httpsCallable(this.functions, 'deleteOwnAccount');
+
+    await callable();
+
+    await signOut(this.auth);
+  }
 }

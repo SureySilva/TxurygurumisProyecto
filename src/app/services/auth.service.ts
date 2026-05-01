@@ -6,8 +6,9 @@ import { Observable } from 'rxjs';
 import { sendEmailVerification, createUserWithEmailAndPassword } from "firebase/auth";
 import { Firestore, doc, setDoc } from '@angular/fire/firestore';
 import { CartService } from './cart.service';
-import { ConfirmService } from './confirm.service';
+import { ConfirmService } from './messages/confirm.service';
 import { Router } from '@angular/router';
+import { NotificationService } from './messages/notification.service';
 
 
 @Injectable({
@@ -19,18 +20,19 @@ export class AuthService {
 
 
   constructor(private auth: Auth, private functions: Functions, private firestore: Firestore,
-    private router: Router, private cartService: CartService, private confirmService: ConfirmService
+    private router: Router, private cartService: CartService,
+    private notificationService: NotificationService, private confirmService: ConfirmService
   ) {
     this.user$ = user(this.auth);
     onAuthStateChanged(this.auth, async (user) => {
-       console.log("Auth state:", user);
-    if (user?.uid) {
-      console.log("Usuario autenticado:", user.uid);
-      await this.cartService.mergeCartOnLogin(user.uid);
-    } else {
-      this.cartService.loadGuestCart(); 
-    }
-  });
+      console.log("Auth state:", user);
+      if (user?.uid) {
+        console.log("Usuario autenticado:", user.uid);
+        await this.cartService.mergeCartOnLogin(user.uid);
+      } else {
+        this.cartService.loadGuestCart();
+      }
+    });
   }
 
   // Registro
@@ -47,6 +49,10 @@ export class AuthService {
       // const fn = httpsCallable(this.functions, 'createUserAccount');
       if (this.auth.currentUser) {
         await sendEmailVerification(this.auth.currentUser);
+        await signOut(this.auth);
+
+        this.notificationService.show('Cuenta creada correctamente. Revisa tu correo para verificar tu cuenta.', 'success');
+        this.router.navigate(['/']);
       }
     } catch (err: any) {
       console.error("Error creando usuario:", err.code);
@@ -84,17 +90,17 @@ export class AuthService {
   logout(): void {
     //confirmar antes de cerrar sesión
 
-  this.confirmService.ask("¿Seguro que quieres cerrar sesión?")
-    .subscribe(async (ok) => {
-      if (ok) {
-        await signOut(this.auth);
-        this.cartService.clearCartState();
-        this.router.navigate(['/']);
-      }
-    });
+    this.confirmService.ask("¿Seguro que quieres cerrar sesión?")
+      .subscribe(async (ok) => {
+        if (ok) {
+          await signOut(this.auth);
+          this.cartService.clearCartState();
+          this.router.navigate(['/']);
+        }
+      });
   }
 
-  
+
 
   //Recuperar contraseña
   async sendPasswordResetEmail(email: string) {

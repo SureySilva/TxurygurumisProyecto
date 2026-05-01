@@ -49,24 +49,17 @@ select{
     width: 100px;
     margin-bottom: 15px;
 }
-.popup {
-    position: fixed;
-    bottom: 20px;
-    right: auto;
-    left: auto;
-    border: 2px solid #d0d0d0;
-    background-color: #BA04FD; 
+button{
+    background-color: #BA04FD;
     color: white;
-    padding: 15px 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    z-index: 1000;
-    animation: fadeInOut 2s ease;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
 }
 
-@keyframes fadeInOut {
-    0% { opacity: 0; transform: translateY(20px); }
-    10% { opacity: 1; transform: translateY(0); }
-    90% { opacity: 1; }
-    100% { opacity: 0; transform: translateY(20px); }
+.link {
+  width: 80%;
+  margin: 0 auto;
 }

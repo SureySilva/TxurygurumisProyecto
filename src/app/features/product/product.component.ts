@@ -5,11 +5,13 @@ import { Product, Variant } from '../../models/product.model';
 import { NgIf, NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../services/cart.service';
+import { NotificationService } from '../../services/messages/notification.service';
+import { BreadcrumbComponent } from '../../shared/breadcrumb/breadcrumb.component';
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [NgIf, NgFor, FormsModule],
+  imports: [NgIf, NgFor, FormsModule, BreadcrumbComponent],
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss'],
 })
@@ -25,7 +27,9 @@ export class ProductComponent {
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
-    private cartService: CartService
+    private cartService: CartService,
+    private router: Router,
+    private notificationService: NotificationService,
   ) {
     this.loadProduct();
   }
@@ -99,10 +103,8 @@ export class ProductComponent {
         }
         else {
           //Si supera el stock, mostramos mensaje de error
-          this.errorMessage = true;
-          setTimeout(() => {
-            this.errorMessage = false;
-          }, 2000);
+          this.notificationService.show('Cantidad solicitada excede el stock disponible', 'error');
+          return;
         }
       }
 
@@ -117,12 +119,9 @@ export class ProductComponent {
         ...(this.selectedVariant.color ? { color: this.selectedVariant.color } : {})
       });
     }
-    this.showMessage = true;
-    setTimeout(() => {
-      this.showMessage = false;
-    }, 2000);
-    // Redirigimos a la tienda
-    // this.router.navigate(['/tienda']);
+    this.notificationService.show('Artículo añadido al carrito', 'success');
+    //Redirigimos a la tienda
+    this.router.navigate(['/tienda']);
   }
 
 

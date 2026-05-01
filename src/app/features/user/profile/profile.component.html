@@ -35,10 +35,6 @@
         </ng-template>
       </div>
     </div>
-    <div class="messages">
-      <p class="success-message" *ngIf="successMessage">{{ successMessage }}</p>
-      <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
-    </div>
 
     <div class="profile-section" *ngIf="profile.addresses">
       <h2>Direcciones de envío</h2>
@@ -128,14 +124,13 @@
           </button>
         </div>
       </div>
-
-      <div class="messages">
-        <p class="success-message" *ngIf="successAddressMessage">{{ successAddressMessage }}</p>
-        <p class="error-message" *ngIf="errorAddressMessage">{{ errorAddressMessage }}</p>
-      </div>
       <p class="address-limit" *ngIf="profile.addresses.length >= 2">
         Has alcanzado el máximo de 2 direcciones de envío.
       </p>
+    </div>
+
+    <div class="delete-account">
+      <button type="button" (click)="deleteAccount()">Eliminar cuenta</button>
     </div>
   </div>
 </div>

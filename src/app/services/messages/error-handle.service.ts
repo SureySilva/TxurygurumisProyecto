@@ -26,7 +26,8 @@ export class ErrorHandleService {
    * @param code código de error devuelto por Firebase o la función en la nube
    * @returns mensaje de error amigable para mostrar al usuario
    */
-  getMessage(code: string): string {
+  getMessage(error: any): string {
+    const code = error?.code || error;
     return this.map[code] || "Error inesperado";
   }
 }

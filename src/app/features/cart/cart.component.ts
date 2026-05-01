@@ -1,31 +1,54 @@
 import { Component } from '@angular/core';
 import { CartService } from '../../services/cart.service';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
-import { observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { UserService } from '../../services/user/user.service';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { NotificationService } from '../../services/messages/notification.service';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [NgIf, NgFor, AsyncPipe],
+  imports: [NgIf, NgFor, AsyncPipe, FormsModule],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss'
 })
 export class CartComponent {
 
 
-  cartItems$;
-  showMessage = false;
-  errorMessage = false;
+  cartItems$: Observable<any[]>;
+  profile$: Observable<any>;
   userData: any = null;
 
-  constructor(private cartService: CartService, private userService: UserService) {
+  userAddresses: any[] = [];
+  selectedAddress: number | null = null;
+  paymentMethod: 'card' | 'paypal' = 'card';
+  cardData = {
+    name: '',
+    number: '',
+    expiry: '',
+    cvv: ''
+  };
+
+  constructor(private cartService: CartService, private userService: UserService,
+    private router: Router, private notificationService: NotificationService
+  ) {
     this.cartItems$ = this.cartService.cart$;
+    this.profile$ = this.userService.getCurrentProfile();
   }
+
   ngOnInit(): void {
-    this.userService.getUser().subscribe(user => {
+    this.userService.getCurrentProfile().subscribe(user => {
       this.userData = user;
+      this.userAddresses = user?.addresses ?? [];
+
+      if (this.userAddresses.length > 0) {
+        this.selectedAddress = 0;
+      }
     });
+     this.cartService.listenCartStock();
+    
   }
 
   async purchase() {
@@ -33,26 +56,43 @@ export class CartComponent {
       alert("Debes iniciar sesión para realizar una compra.");
       return;
     }
-    
+
+    if (!this.userAddresses.length) {
+      this.notificationService.show("Debes agregar una dirección de envío para continuar.", "error");
+      return;
+    }
+
+    if (this.selectedAddress === null && this.userAddresses.length >= 2) {
+      this.notificationService.show("Debes seleccionar una dirección.", "error");
+      return;
+    }
+
+    if (this.paymentMethod === 'card') {
+      if (await this.cartService.checkout([...this.getSnapshot()], this.userAddresses[this.selectedAddress!], this.paymentMethod)) {
+        this.notificationService.show("Compra realizada con éxito. ¡Gracias por tu compra!", "success");
+        this.cartService.clearCart();      
+      } else {
+        this.notificationService.show("Ha ocurrido un error durante el proceso de compra. Por favor, inténtelo de nuevo más tarde.", "error");
+      }
+    }
+
+    if (this.paymentMethod === 'paypal') {
+      //window.location.href = '/paypal-demo';
+    }
 
     console.log("Usuario actual al comprar:", this.userData);
 
-    // if(await this.cartService.checkout([...this.getSnapshot()])) {
-    //   this.showMessage = true;
-    //   setTimeout(() => {
-    //         this.showMessage = false;
-    //       }, 2000);
-    // }else {
-    //   this.errorMessage = true;
-    //   setTimeout(() => {
-    //         this.errorMessage = false;
-    //       }, 2000);
-    // }
+
   }
+
+  goToProfile(): void {
+    this.router.navigate(['/perfil']);
+  }
+
 
   clearCart() {
     this.cartService.clearCart();
-  } 
+  }
   removeFromCart(index: number) {
     this.cartService.removeItem(index);
   }

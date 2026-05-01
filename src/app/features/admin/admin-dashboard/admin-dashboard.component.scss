@@ -1,0 +1,53 @@
+.dashboard {
+   display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 25px;
+    margin: auto;
+    margin-top: 1%;
+    margin-bottom: 3%;
+    width: 50%;
+
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  width: 220px;
+  min-height: 230px;
+  padding: 20px;
+  margin-left: 2%;
+  background: #fffafa;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  background-color: #f0e6ff;
+}
+
+h2{
+  text-align: center;
+  margin-top: 3%;
+}
+
+
+@media (max-width: 900px) {
+  .dashboard {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 90%;
+    max-width: 300px;
+    margin-left: 0;
+  }
+}

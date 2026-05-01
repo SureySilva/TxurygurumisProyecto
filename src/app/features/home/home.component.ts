@@ -1,9 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Pattern } from '../../models/pattern.model';
 import { PatternsService } from '../../services/patterns.service';
 import { Observable } from 'rxjs';
+import { UserService } from '../../services/user/user.service';
+import { Product } from '../../models/product.model';
+import { ProductService } from '../../services/product.service';
+import { HomeContent } from '../../models/home-content.model';
+import { HomeService } from '../../services/admin/home.service';
 
 @Component({
   selector: 'app-home',
@@ -12,10 +17,19 @@ import { Observable } from 'rxjs';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
-  items$: Observable<Pattern[]>;
+  patterns$: Observable<Pattern[]>;
+  products$: Observable<Product[]>;
+  homeContent$: Observable<HomeContent>;
+
  
-   constructor(private patternsService: PatternsService) {
-     this.items$ = this.patternsService.getLatest(2);
+   constructor(private patternsService: PatternsService, private userService: UserService,
+               private productService: ProductService, private homeService: HomeService
+   ) {
+     this.patterns$ = this.patternsService.getLatest(2);
+     this.products$ = this.productService.getLatest(2);
+     this.homeContent$ = this.homeService.getHomeContent();
+
    }
+
 }
 
