@@ -117,29 +117,48 @@
           <h3>Método de pago</h3>
 
           <label>
-            <input type="radio" name="paymentMethod" value="card" [(ngModel)]="paymentMethod" />
+            <input type="radio" name="paymentMethod" value="card" [(ngModel)]="paymentMethod" selected/>
             Tarjeta
           </label>
 
           <label>
-            <input type="radio" name="paymentMethod" value="paypal" [(ngModel)]="paymentMethod" />
+            <input type="radio" name="paymentMethod" value="paypal" (change)="selectPaypal()">
             PayPal
           </label>
 
-          <div *ngIf="paymentMethod === 'card'" class="card-form">
-            <input type="text" [(ngModel)]="cardData.name" placeholder="Nombre del titular" />
-            <input type="text" [(ngModel)]="cardData.number" placeholder="Número de tarjeta" />
-            <input type="text" [(ngModel)]="cardData.expiry" placeholder="MM/AA" />
-            <input type="text" [(ngModel)]="cardData.cvv" placeholder="CVV" />
-          </div>
+          <div *ngIf="paymentMethod === 'paypal'" id="paypal-button-container"></div>
 
-          <div *ngIf="paymentMethod === 'paypal'" class="paypal-box">
-            <p>Serás redirigido a PayPal para completar el pago.</p>
+          <div *ngIf="paymentMethod === 'card'" class="card-form">
+
+            <h3>Datos de la tarjeta</h3>
+
+            <div class="form-group">
+              <label>Nombre del titular</label>
+              <input type="text" [(ngModel)]="cardData.name" placeholder="Juan Pérez" />
+            </div>
+
+            <div class="form-group">
+              <label>Número de tarjeta</label>
+              <input type="text" [(ngModel)]="cardData.number" placeholder="1234 5678 9012 3456" />
+            </div>
+
+            <div class="row">
+              <div class="form-group small">
+                <label>Fecha de caducidad</label>
+                <input type="text" [(ngModel)]="cardData.expiry" placeholder="MM/AA" />
+              </div>
+
+              <div class="form-group small">
+                <label>CVV</label>
+                <input type="text" [(ngModel)]="cardData.cvv" placeholder="123" />
+              </div>
+            </div>
+            <div *ngIf="userData" class="cart-summary">
+              <button (click)="purchase()" class="purchaseBtn btn btn-secondary mt-3">Confirmar compra</button>
+            </div>
           </div>
         </div>
-        <div *ngIf="userData" class="cart-summary">
-          <button (click)="purchase()" class="purchaseBtn btn btn-secondary mt-3">Confirmar compra</button>
-        </div>
+
       </div>
     </ng-container>
   </div>

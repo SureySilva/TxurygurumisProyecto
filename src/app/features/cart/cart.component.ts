@@ -6,6 +6,7 @@ import { UserService } from '../../services/user/user.service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NotificationService } from '../../services/messages/notification.service';
+import { PaypalService } from '../../services/paypal.service';
 
 @Component({
   selector: 'app-cart',
@@ -32,7 +33,8 @@ export class CartComponent {
   };
 
   constructor(private cartService: CartService, private userService: UserService,
-    private router: Router, private notificationService: NotificationService
+    private router: Router, private notificationService: NotificationService,
+    private paypalService: PaypalService
   ) {
     this.cartItems$ = this.cartService.cart$;
     this.profile$ = this.userService.getCurrentProfile();
@@ -127,4 +129,56 @@ export class CartComponent {
     this.cartItems$.subscribe(v => value = v).unsubscribe();
     return value;
   }
+
+  /**
+ * Inicializa el botón de PayPal cuando se selecciona ese método de pago.
+ */
+selectPaypal(): void {
+  this.paymentMethod = 'paypal';
+
+  setTimeout(() => {
+    this.paypalService.renderPaypalButton(
+      '#paypal-button-container',
+      this.getTotal(),
+      async (paypalOrderId: string) => {
+        await this.finishPaypalCheckout(paypalOrderId);
+      },
+      (error: any) => {
+        console.error('Error en PayPal:', error);
+        this.notificationService.show(
+          'Ha ocurrido un error con PayPal.',
+          'error'
+        );
+      }
+    );
+  });
+}
+
+/**
+ * Finaliza la compra después de que PayPal haya aprobado el pago.
+ *
+ * @param paypalOrderId Identificador del pago devuelto por PayPal.
+ */
+private async finishPaypalCheckout(paypalOrderId: string): Promise<void> {
+  const ok = await this.cartService.checkout(
+    [...this.getSnapshot()],
+    this.userAddresses[this.selectedAddress!],
+    'paypal',
+    paypalOrderId
+  );
+
+  if (ok) {
+    this.notificationService.show(
+      'Pago con PayPal realizado con éxito. ¡Gracias por tu compra!',
+      'success'
+    );
+
+    this.cartService.clearCart();
+  } else {
+    this.notificationService.show(
+      'El pago se ha realizado, pero no se pudo crear el pedido.',
+      'error'
+    );
+  }
+}
 }

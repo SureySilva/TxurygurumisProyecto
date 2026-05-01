@@ -111,6 +111,7 @@ export const checkout = onCall(async (request) => {
         uid,
         state: "pendiente",
         paymentMethod: request.data.paymentMethod ?? "card",
+        paypalOrderId: request.data.paypalOrderId ?? null,
         address,
         items,
         total,

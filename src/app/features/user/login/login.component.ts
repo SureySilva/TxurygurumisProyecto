@@ -16,9 +16,8 @@ export class LoginComponent {
   public email:string = '';
   public password: string = '';
   public error: string = '';
-  
   public message: string = '';
-  public showToast: boolean = false;
+
 
   constructor(
     private auth: AuthService, 
@@ -58,6 +57,16 @@ export class LoginComponent {
       })
       .catch(err => {
         this.error = 'Error al iniciar sesión con Google';
+      });
+  }
+  resendVerificationEmail() {
+    this.auth.resendVerificationEmail(this.email)
+      .then(() => {
+        this.message = 'Correo de verificación reenviado. Por favor, revisa tu bandeja de entrada.';
+        this.error = '';
+      })
+      .catch(err => {
+        this.error = 'Error al reenviar el correo de verificación';
       });
   }
 }

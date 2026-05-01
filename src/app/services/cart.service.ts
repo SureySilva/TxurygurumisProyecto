@@ -227,7 +227,7 @@ export class CartService {
     return Array.from(map.values());
   }
 
-  async checkout(cart: any[], address: any, paymentMethod: string): Promise<boolean> {
+  async checkout(cart: any[], address: any, paymentMethod: string, paypalOrderId?: string): Promise<boolean> {
 
     this.listenCartStock();
     const validItems = this.cartSubject.value.filter(item => item.valid !== false);
@@ -243,7 +243,8 @@ export class CartService {
       const result: any = await callable({
         items: validItems,
         address,
-        paymentMethod
+        paymentMethod,
+        paypalOrderId
       });
 
       console.log('Compra realizada:', result);

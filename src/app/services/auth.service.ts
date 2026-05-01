@@ -17,6 +17,7 @@ import { NotificationService } from './messages/notification.service';
 export class AuthService {
 
   user$: Observable<any>;
+  user:any;
 
 
   constructor(private auth: Auth, private functions: Functions, private firestore: Firestore,
@@ -68,6 +69,7 @@ export class AuthService {
     const user = result.user;
 
     if (!user.emailVerified) {
+      this.user=user;
       await signOut(this.auth);
       throw new Error("Verifica tu correo primero");
     }
@@ -110,5 +112,21 @@ export class AuthService {
       console.error("Error al enviar el correo de recuperación:", error);
       throw new Error("Error al enviar el correo de recuperación");
     }
+  }
+
+  // Reenviar correo de verificación
+  async resendVerificationEmail(email: string) {
+    try {
+      const user = this.user;
+      console.log("Usuario actual para reenviar verificación:", user);
+      if (user && user.email === email && !user.emailVerified) {
+        await sendEmailVerification(user);
+      } else {
+        throw new Error("No se puede reenviar el correo de verificación");
+      }
+    } catch (error) {
+      console.error("Error al reenviar el correo de verificación:", error);
+      throw new Error("Error al reenviar el correo de verificación");
+    } 
   }
 }
