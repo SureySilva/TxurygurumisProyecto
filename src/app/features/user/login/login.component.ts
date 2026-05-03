@@ -42,6 +42,7 @@ export class LoginComponent {
       .catch(err => {
         console.log("Error login:", err);
         this.error = this.errorHandler.getMessage(err);
+        this.message = '';
       });
   }
   /**
@@ -57,6 +58,7 @@ export class LoginComponent {
       })
       .catch(err => {
         this.error = 'Error al iniciar sesión con Google';
+        this.message = '';
       });
   }
   resendVerificationEmail() {
