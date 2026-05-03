@@ -1,5 +1,9 @@
-
-.cart-container{
+.buttons-container{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+.cart-container, .shippingData{
     display: block flex;
     flex-direction: column;
     justify-content: center space-around;
@@ -32,7 +36,81 @@
     margin-bottom: 20px;
     padding-bottom: 20px;
 }
+.popup {
+    position: fixed;
+    bottom: 20px;
+    right: auto;
+    left: auto;
+    border: 2px solid #d0d0d0;
+    background-color: #BA04FD; 
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 1000;
+    animation: fadeInOut 2s ease;
+}
 .purchaseBtn:hover{
     background-color: #BA04FD;
 
+}
+.disabled-item {
+  opacity: 0.45;
+  background: #f3f3f3;
+}
+
+.stock-warning {
+  color: #b00020;
+  font-size: 0.9rem;
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+.card-form {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 16px;
+  background: transparent;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.card-form h3 {
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+ 
+}
+
+.form-group label {
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.form-group input {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  transition: all 0.2s ease;
+}
+
+.form-group input:focus {
+  border-color: #0070ba; /* estilo PayPal */
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0,112,186,0.2);
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+}
+
+.form-group.small {
+  flex: 1;
 }

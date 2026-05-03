@@ -1,11 +1,14 @@
+import { Timestamp } from "@angular/fire/firestore";
+
 export interface Pattern {
-  id?: number;
+  id?: string;
   title: string;
   subtitle: string;
   materials: Array<string>;
   abbreviations: Array<string>;
   description: string;
   imageUrl?: string;
+  storagePath?: string;
   difficulty: 'Principiante' | 'Intermedio' | 'Avanzado';
-  createdAt: Date;
+  createdAt?: Timestamp;
 }

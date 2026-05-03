@@ -1,0 +1,76 @@
+<section class="admin-products">
+    <div class="admin-header">
+        <h2>Administrar productos</h2>
+
+        <button type="button" (click)="addProduct()">
+            Añadir producto
+        </button>
+    </div>
+    <div class="filter-buttons">
+        <button (click)="setFilter('all')">Todos</button>
+        <button (click)="setFilter('store')">Solo tienda</button>
+        <button (click)="setFilter('gallery')">Solo galería</button>
+        <button (click)="setFilter('both')">Ambos</button>
+    </div>
+
+    <div *ngIf="filteredProducts$ | async as products">
+
+        <p *ngIf="products.length === 0">
+            No hay elementos para este filtro.
+        </p>
+
+        <table *ngIf="products.length > 0">
+            <thead>
+                <tr>
+                    <th>Imagen</th>
+                    <th>Título</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>En venta</th>
+                    <th>Galería</th>
+                    <th>Variantes</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let product of products">
+                    <td>
+                        <img [src]="product.imageUrl" [alt]="product.alt" width="80">
+                    </td>
+
+                    <td>{{ product.title }}</td>
+
+                    <td>{{product.description}}</td>
+
+                    <td>{{ product.price }} €</td>
+
+                    <td>
+                        {{ product.isForSale ? 'Sí' : 'No' }}
+                    </td>
+
+                    <td>
+                        {{ product.showInGallery ? 'Sí' : 'No' }}
+                    </td>
+
+                    <td>
+                        {{ product.variants?.length || 0 }}
+                    </td>
+
+                    <td class="edit-buttons">
+                        <button type="button" (click)="editProduct(product)">
+                            Editar
+                        </button>
+
+                        <button type="button" (click)="deleteProduct(product)">
+                            Eliminar
+                        </button>
+                    </td>
+                </tr>
+                <tr *ngIf="products.length==0">
+                    <td>No hay productos creados.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>

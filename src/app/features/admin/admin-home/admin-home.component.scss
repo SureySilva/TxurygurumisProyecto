@@ -1,0 +1,53 @@
+.admin-home {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  margin: auto;
+  margin-top: 3%;
+  margin-bottom: 3%;
+  max-width: 900px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+input {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.preview {
+  margin: 2rem 0;
+  padding: 1rem;
+  background-color: #fffafa;
+  border-radius: 10px;
+}
+
+button {
+  padding: 0.6rem 1rem;
+  margin: 1rem;
+  cursor: pointer;
+}
+
+button:hover{
+  background-color: #f0e6ff;
+}
+.welcome-text-editor {
+  display: block;
+  width: 100%;
+}
+.welcome-text-editor .ql-toolbar,
+.welcome-text-editor .ql-container {
+  width: 100%;
+}

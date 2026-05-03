@@ -1,0 +1,135 @@
+.profile-page {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.profile-card {
+  width: 100%;
+  max-width: 900px;
+  background-color: #d9d9d9;
+  border-radius: 25px;
+  padding: 2rem;
+}
+
+.profile-card h1 {
+  margin-bottom: 1.5rem;
+}
+
+.profile-section {
+  background-color: #f4f4f4;
+  border-radius: 20px;
+  padding: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+
+.profile-section h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.label {
+  font-weight: 600;
+}
+
+.value {
+  text-align: right;
+}
+
+.nickname-block,
+.nickname-edit {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.nickname-edit input {
+  min-width: 220px;
+}
+
+.address-card {
+  background: white;
+  border-radius: 15px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.address-card h3 {
+  margin-top: 0;
+}
+
+.address-form {
+  background: white;
+  border-radius: 15px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.form-grid label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+}
+
+.form-grid input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #bbb;
+  border-radius: 10px;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.address-limit {
+  margin-top: 1rem;
+  font-weight: 600;
+  color: #8a5a00;
+}
+
+@media (max-width: 768px) {
+  .info-row {
+    flex-direction: column;
+  }
+
+  .value {
+    text-align: left;
+  }
+
+  .nickname-block,
+  .nickname-edit {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .full-width {
+    grid-column: auto;
+  }
+}
+

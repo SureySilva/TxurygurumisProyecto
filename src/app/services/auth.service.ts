@@ -4,10 +4,11 @@ import { GoogleAuthProvider, onAuthStateChanged, sendPasswordResetEmail } from '
 import { Functions, httpsCallable } from '@angular/fire/functions';
 import { Observable } from 'rxjs';
 import { sendEmailVerification, createUserWithEmailAndPassword } from "firebase/auth";
-import { Firestore, collection, doc, setDoc, getDoc } from '@angular/fire/firestore';
-import { UserService } from './user.service';
+import { Firestore, doc, setDoc } from '@angular/fire/firestore';
 import { CartService } from './cart.service';
-import { ConfirmService } from './confirm.service';
+import { ConfirmService } from './messages/confirm.service';
+import { Router } from '@angular/router';
+import { NotificationService } from './messages/notification.service';
 
 
 @Injectable({
@@ -16,20 +17,23 @@ import { ConfirmService } from './confirm.service';
 export class AuthService {
 
   user$: Observable<any>;
+  user:any;
 
 
   constructor(private auth: Auth, private functions: Functions, private firestore: Firestore,
-    private userService: UserService, private cartService: CartService, private confirmService: ConfirmService
+    private router: Router, private cartService: CartService,
+    private notificationService: NotificationService, private confirmService: ConfirmService
   ) {
     this.user$ = user(this.auth);
-    onAuthStateChanged(this.auth, (user) => {
-       console.log("Auth state:", user);
-    if (user?.uid) {
-      this.cartService.init(user.uid);
-    } else {
-      this.cartService.clearCartState(); 
-    }
-  });
+    onAuthStateChanged(this.auth, async (user) => {
+      console.log("Auth state:", user);
+      if (user?.uid) {
+        console.log("Usuario autenticado:", user.uid);
+        await this.cartService.mergeCartOnLogin(user.uid);
+      } else {
+        this.cartService.loadGuestCart();
+      }
+    });
   }
 
   // Registro
@@ -37,14 +41,19 @@ export class AuthService {
     try {
       const result = await createUserWithEmailAndPassword(this.auth, data.email, data.password);
       await setDoc(doc(this.firestore, "users", result.user.uid), {
-        name: data.displayName,
+        nickname: data.displayName,
         email: data.email,
+        addresses: [],
         role: "user",
         createdAt: Date.now(),
       });
       // const fn = httpsCallable(this.functions, 'createUserAccount');
       if (this.auth.currentUser) {
         await sendEmailVerification(this.auth.currentUser);
+        await signOut(this.auth);
+
+        this.notificationService.show('Cuenta creada correctamente. Revisa tu correo para verificar tu cuenta.', 'success');
+        this.router.navigate(['/']);
       }
     } catch (err: any) {
       console.error("Error creando usuario:", err.code);
@@ -60,6 +69,7 @@ export class AuthService {
     const user = result.user;
 
     if (!user.emailVerified) {
+      this.user=user;
       await signOut(this.auth);
       throw new Error("Verifica tu correo primero");
     }
@@ -79,23 +89,20 @@ export class AuthService {
     return await fn({});
   }
   // Logout
-  logout() {
+  logout(): void {
     //confirmar antes de cerrar sesión
 
-  this.confirmService.ask("¿Seguro que quieres cerrar sesión?")
-    .subscribe(async (ok) => {
-      if (ok) {
-        await signOut(this.auth);
-        
-      }
-    });
+    this.confirmService.ask("¿Seguro que quieres cerrar sesión?")
+      .subscribe(async (ok) => {
+        if (ok) {
+          await signOut(this.auth);
+          this.cartService.clearCartState();
+          this.router.navigate(['/']);
+        }
+      });
   }
 
-  // Función para actualizar el perfil del usuario
-  updateUser(data: any) {
-    const fn = httpsCallable(this.functions, 'updateUser');
-    return fn(data);
-  }
+
 
   //Recuperar contraseña
   async sendPasswordResetEmail(email: string) {
@@ -105,5 +112,21 @@ export class AuthService {
       console.error("Error al enviar el correo de recuperación:", error);
       throw new Error("Error al enviar el correo de recuperación");
     }
+  }
+
+  // Reenviar correo de verificación
+  async resendVerificationEmail(email: string) {
+    try {
+      const user = this.user;
+      console.log("Usuario actual para reenviar verificación:", user);
+      if (user && user.email === email && !user.emailVerified) {
+        await sendEmailVerification(user);
+      } else {
+        throw new Error("No se puede reenviar el correo de verificación");
+      }
+    } catch (error) {
+      console.error("Error al reenviar el correo de verificación:", error);
+      throw new Error("Error al reenviar el correo de verificación");
+    } 
   }
 }

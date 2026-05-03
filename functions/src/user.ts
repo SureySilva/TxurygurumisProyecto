@@ -1,63 +1,65 @@
-import {onCall} from "firebase-functions/v2/https";
+import {onCall, HttpsError} from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
-import {sanitize} from "./utils/sanitize";
+import {sanitize, sanitizeObjectStrings} from "./utils/sanitize";
 // Función para actualizar el perfil del usuario
 export const updateUser = onCall(async (request) => {
   const uid = request.auth?.uid;
+  const data = request.data.data as {
+    nickname?: string;
+    addresses?: {
+      name: string;
+      fullName: string;
+      street: string;
+      city: string;
+      postalCode: string;
+      country: string;
+      phone: string;
+    }[];
+  };
 
   if (!uid) {
-    throw new Error("No autenticado");
+    throw new HttpsError("unauthenticated", "Usuario no autenticado");
   }
 
-  const {name, address} = request.data;
-
-  if (name && name.length < 2) {
-    throw new Error("Nombre inválido");
-  }
-
-  if (address && address.length < 5) {
-    throw new Error("Dirección inválida");
+  if (data.nickname && data.nickname.length < 2) {
+    throw new HttpsError("invalid-argument", "Nombre de usuario no válido");
   }
 
   const updateData: any = {};
 
-  if (name) updateData.name = sanitize(name);
-  if (address) updateData.address = sanitize(address);
+  if (typeof data.nickname === "string") {
+    updateData.nickname = data.nickname.trim();
+  }
+
+  if (data.nickname) updateData.nickname = sanitize(data.nickname);
+  if (Array.isArray(data.addresses)) {
+    const invalidAddress = data.addresses.some((address) =>
+      !isValidObjectStrings(address));
+    if (invalidAddress) {
+      throw new HttpsError("invalid-argument", "Dirección no válida");
+    }
+
+    updateData.addresses = data.addresses.map(sanitizeObjectStrings);
+  }
 
   await admin.firestore().collection("users").doc(uid).update(updateData);
 
   return {success: true};
 });
-// Función para crear una cuenta de usuario
-// export const createUserAccount = onCall(async (request) => {
-//   try {
-//     const {email, password, name} = request.data;
 
-//     const userRecord = await admin.auth().createUser({
-//       email,
-//       password,
-//     });
+const isValidObjectStrings = (obj: Record<string, unknown>): boolean => {
+  return Object.values(obj).every(
+    (value) => typeof value === "string" && value.trim().length > 0
+  );
+};
 
-//     await admin.firestore().collection("users").doc(userRecord.uid).set({
-//       name,
-//       email,
-//       role: "user",
-//       createdAt: Date.now(),
-//     });
-
-//     return {uid: userRecord.uid};
-//   } catch (err: any) {
-//     console.error("Error creando usuario:", err);
-//     throw new Error(err.message || "Error al crear la cuenta");
-//   }
-// });
 // Función para crear una cuenta de usuario con Google
 export const syncUser = onCall(async (request) => {
   console.log("AUTH UID:", request.auth?.uid);
   const uid = request.auth?.uid;
 
   if (!uid) {
-    throw new Error("No autenticado");
+    throw new HttpsError("unauthenticated", "Usuario no autenticado");
   }
 
   const user = await admin.auth().getUser(uid);
@@ -67,8 +69,9 @@ export const syncUser = onCall(async (request) => {
 
   if (!doc.exists) {
     await userRef.set({
-      name: user.displayName || "Usuario",
+      nickname: user.displayName || "Usuario",
       email: user.email,
+      addresses: [],
       role: "user",
       createdAt: Date.now(),
     });
@@ -81,7 +84,7 @@ export const syncUser = onCall(async (request) => {
 export const getUserData = onCall(async (request) => {
   try {
     if (!request.auth) {
-      throw new Error("No autenticado");
+      throw new HttpsError("unauthenticated", "Usuario no autenticado");
     }
 
     const uid = request.auth.uid;
@@ -89,12 +92,13 @@ export const getUserData = onCall(async (request) => {
     const doc = await admin.firestore().collection("users").doc(uid).get();
 
     if (!doc.exists) {
-      throw new Error("Usuario no encontrado");
+      throw new HttpsError("not-found", "Usuario no encontrado");
     }
 
     return doc.data();
   } catch (error: any) {
     console.error("ERROR getUserData:", error);
-    throw new Error(error.message || "Error obteniendo usuario");
+    throw new HttpsError("internal", "Error obteniendo usuario");
   }
 });
+

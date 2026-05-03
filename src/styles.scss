@@ -5,6 +5,7 @@
 
 // Incluye core
 @include mat.core();
+@import "quill/dist/quill.snow.css";
 
 // Tema M3
 $theme: mat.define-theme((
@@ -72,3 +73,19 @@ body{
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/** QUILL EDITOR - Página admin home**/
+.ql-toolbar {
+  background-color: #f5f5f5;
+  border-radius: 8px 8px 0 0;
+}
+
+.ql-container {
+  background-color: white;
+  border-radius: 0 0 8px 8px;
+}
+
+.ql-editor {
+  background-color: white;
+  min-height: 150px;
+}

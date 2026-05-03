@@ -1,0 +1,57 @@
+<section class="admin-patterns">
+  <div class="admin-header">
+    <h2>Administrar patrones</h2>
+
+    <button type="button" (click)="addPattern()">
+      Añadir patrón
+    </button>
+  </div>
+
+  <div *ngIf="patterns$ | async as patterns">
+    <p *ngIf="patterns.length === 0">
+      No hay patrones creados.
+    </p>
+
+    <table *ngIf="patterns.length > 0">
+      <thead>
+        <tr>
+          <th>Imagen</th>
+          <th>Título</th>
+          <th>Subtítulo</th>
+          <th>Dificultad</th>
+          <th>Materiales</th>
+          <th>Abreviaturas</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let pattern of patterns">
+          <td>
+            <img
+              *ngIf="pattern.imageUrl"
+              [src]="pattern.imageUrl"
+              [alt]="pattern.title"
+            >
+          </td>
+
+          <td>{{ pattern.title }}</td>
+          <td>{{ pattern.subtitle }}</td>
+          <td>{{ pattern.difficulty }}</td>
+          <td>{{ pattern.materials.length }}</td>
+          <td>{{ pattern.abbreviations.length }}</td>
+
+          <td>
+            <button type="button" (click)="editPattern(pattern)">
+              Editar
+            </button>
+
+            <button type="button" (click)="deletePattern(pattern)">
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

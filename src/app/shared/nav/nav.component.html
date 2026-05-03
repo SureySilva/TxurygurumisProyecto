@@ -1,0 +1,65 @@
+<nav class="menu_principal">
+
+	<ul>
+		<li><a [routerLinkActive]="['seleccionado']" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/']"
+				(click)="isOpen=false; userMenuOpen=false">Inicio</a></li>
+		<li class="dropdown">Guías
+			<button (click)="toggleMenu()"><img src="images/flecha-desplegable.png" alt="flecha"
+					class="flecha" /></button>
+			<div class="dropdown-content" [class.show]="isOpen">
+				<a [routerLinkActive]="['seleccionado']" [routerLink]="['/guias/materiales']">Materiales</a>
+				<a href="#">Puntadas</a>
+				<a href="#">Primeros pasos</a>
+			</div>
+		</li>
+
+		<li><a [routerLinkActive]="['seleccionado']" [routerLink]="['/galeria']"
+				(click)="isOpen=false; userMenuOpen=false">Galería</a></li>
+		<li><a [routerLinkActive]="['seleccionado']" [routerLink]="['/patrones']"
+				(click)="isOpen=false; userMenuOpen=false">Patrones
+				gratis</a></li>
+		<li><a [routerLinkActive]="['seleccionado']" [routerLink]="['/tienda']"
+				(click)="isOpen=false; userMenuOpen=false">Tienda</a></li>
+
+		<li class="user-dropdown">
+			<ng-container *ngIf="authUser$ | async as user; else login">
+				<ng-container *ngIf="user.emailVerified">
+					<div *ngIf="profile$ | async as profile; else login">
+						Bienvenido
+						<button (click)="toggleUserMenu()">{{ profile.nickname }}</button>
+
+						<div class="dropdown-user-content" [class.show]="userMenuOpen">
+							<a *ngIf="isAdmin$ | async" [routerLink]="['/admin']"
+								(click)="isOpen=false; userMenuOpen=false">
+								Panel de administración
+							</a>
+
+							<a [routerLinkActive]="['seleccionado']" [routerLink]="['/perfil']"
+								(click)="isOpen=false; userMenuOpen=false">
+								Perfil
+							</a>
+
+							<a *ngIf="isAdmin$ | async; else userOrders" [routerLink]="['/admin/pedidos']"
+								(click)="isOpen=false; userMenuOpen=false">
+								Pedidos
+							</a>
+
+							<ng-template #userOrders>
+								<a [routerLinkActive]="['seleccionado']" [routerLink]="['/mis-pedidos']"
+									(click)="isOpen=false; userMenuOpen=false">
+									Mis pedidos
+								</a>
+							</ng-template>
+
+							<button (click)="logout()">Logout</button>
+						</div>
+					</div>
+				</ng-container>
+			</ng-container>
+
+			<ng-template #login>
+				<a routerLink="/login">Login</a>
+			</ng-template>
+		</li>
+	</ul>
+</nav>

@@ -3,10 +3,11 @@ import { Component } from '@angular/core';
 import { Pattern } from '../../models/pattern.model';
 import { PatternsService } from '../../services/patterns.service';
 import { ActivatedRoute } from '@angular/router';
+import { BreadcrumbComponent } from '../../shared/breadcrumb/breadcrumb.component';
 
 @Component({
   selector: 'app-pattern-info',
-  imports: [NgIf, NgFor],
+  imports: [NgIf, NgFor, BreadcrumbComponent],
   templateUrl: './pattern-info.component.html',
   styleUrl: './pattern-info.component.scss'
 })
@@ -24,7 +25,7 @@ export class PatternInfoComponent {
     this.patternsService.getPattern(id).subscribe(pattern => {
 
       this.pattern = pattern;
-
+      console.log(pattern.description)
     });
   }
   getRows(items: string[], cols: number): string[][] {

@@ -1,0 +1,45 @@
+<section class="admin-home">
+  <h2>Editar página de inicio</h2>
+
+  <form (ngSubmit)="saveHomeContent()">
+    <div class="form-group">
+      <label for="welcomeTitle">Título de bienvenida</label>
+      <input
+        id="welcomeTitle"
+        type="text"
+        name="welcomeTitle"     
+        [(ngModel)]="homeContent.welcomeTitle"
+        required
+      >
+    </div>
+
+    <div class="form-group">
+      <label>Mensaje de bienvenida</label>
+
+      <quill-editor class="welcome-text-editor"
+        name="welcomeText"
+        [(ngModel)]="homeContent.welcomeText"
+        theme="snow"
+        [modules]="quillModules"
+        [styles]="{ height: '220px' }">
+      </quill-editor>
+    </div>
+
+    <div class="preview">
+      <h3>Vista previa</h3>
+      <h1>{{ homeContent.welcomeTitle }}</h1>
+      <div [innerHTML]="homeContent.welcomeText"></div>
+    </div>
+
+    <button type="submit" [disabled]="isSaving">
+      {{ isSaving ? 'Guardando...' : 'Guardar cambios' }}
+    </button>
+    <button type="button" (click)="cancel()">
+    Cancelar
+   </button>
+
+    <p *ngIf="message">
+      {{ message }}
+    </p>
+  </form>
+</section>

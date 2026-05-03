@@ -33,12 +33,40 @@ h4,p{
 }
 .introduccion{
     display: flex;
-    align-items: center;
+    justify-content: space-around;
+    align-items: center ;
     margin: 2px;
+    width: 80%;
 }
-.instrucciones{
-    margin: 0px 10px 10px 10px;
+.instrucciones {
+  display: block;
+  width: 80%;
+  margin: 2px auto;
 }
+
+.descripcion {
+  width: 100%;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: normal;
+  white-space: normal;
+}
+
+.descripcion p {
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.descripcion img {
+  max-width: 100%;
+  height: auto;
+}
+
 li{
     margin-right: 15px;
+}
+.link {
+  width: 80%;
+  margin: 0 auto;
 }

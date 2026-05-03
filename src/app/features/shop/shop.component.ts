@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ShopService } from '../../services/shop.service';
 import { Product } from '../../models/product.model';
 import { Observable, Subject, BehaviorSubject, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
-import { FormsModule, NgModel } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CartService } from '../../services/cart.service';
-import { AuthService } from '../../services/auth.service';
+import { ProductService } from '../../services/product.service';
+import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-shop',
@@ -15,7 +15,7 @@ import { AuthService } from '../../services/auth.service';
   imports: [
     CommonModule, FormsModule
   ],
-  providers: [ShopService],
+  providers: [],
   templateUrl: './shop.component.html',
   styleUrl: './shop.component.scss'
 })
@@ -28,10 +28,10 @@ export class ShopComponent {
   hasItems = false;
   cartCount = 0;
  
-   constructor(private shopService: ShopService,private router: Router,
-    private cartService: CartService, private authService: AuthService) 
+   constructor(private router: Router, private userService: UserService,
+    private cartService: CartService, private productService: ProductService) 
     {
-     this.items$ = this.shopService.getAll();
+     this.items$ = this.productService.getStoreProducts();
      
    }
    
@@ -56,7 +56,7 @@ ngOnInit(): void {
       let result = items.filter(product =>
         product.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
-
+      const getTime = (item: Product) => item.createdAt?.toMillis?.() ?? 0;
       // ORDENAR
       switch (sortType) {
 
@@ -69,7 +69,7 @@ ngOnInit(): void {
           break;
 
         case 'new':
-          result = [...result].sort((a, b) => Number(b.id) - Number(a.id));
+          result = [...result].sort((a, b) => getTime(b) - getTime(a));
           break;
 
       }

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
-import { GalleryService } from '../../services/gallery.service';
 import { Observable } from 'rxjs';
-import { galleryItem } from '../../models/gallery-item.model';
+import { ProductService } from '../../services/product.service';
+import { Product } from '../../models/product.model';
 
 @Component({
   selector: 'app-gallery',
@@ -13,10 +13,10 @@ import { galleryItem } from '../../models/gallery-item.model';
 })
 export class GalleryComponent {
 
- items$: Observable<galleryItem[]>;
+ items$: Observable<Product[]>;
 
-  constructor(private galleryService: GalleryService) {
-    this.items$ = this.galleryService.getAll();
+  constructor(private productService: ProductService) {
+    this.items$ = this.productService.getGalleryProducts();
   }
 
 }

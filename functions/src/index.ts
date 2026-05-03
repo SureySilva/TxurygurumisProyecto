@@ -3,3 +3,5 @@ admin.initializeApp();
 
 export * from "./user";
 export {sendContact} from "./contact";
+export {checkout, updateOrder} from "./checkout";
+export {deleteOwnAccount} from "./deleteAccount";

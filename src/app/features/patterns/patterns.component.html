@@ -1,5 +1,6 @@
-<div *ngIf="items$ | async as items">
-    <div *ngFor="let item of items" class="item" class="listaPatrones">
+
+<div *ngIf="items$ | async as items" class="listaPatrones"> 
+    <div *ngFor="let item of items" >
         <div class="patron">
             <img [src]="item.imageUrl" [alt]="item.title" class="img-patron">
             <h2>{{ item.title }}</h2>

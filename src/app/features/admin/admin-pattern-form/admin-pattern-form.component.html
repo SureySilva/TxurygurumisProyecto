@@ -1,0 +1,99 @@
+<section class="admin-pattern-form">
+  <h2>{{ isEditMode ? 'Editar patrón' : 'Crear patrón' }}</h2>
+
+  <form (ngSubmit)="savePattern()">
+    <div class="form-group">
+      <label for="title">Título</label>
+      <input id="title" type="text" name="title" [(ngModel)]="pattern.title" required>
+    </div>
+
+    <div class="form-group">
+      <label for="subtitle">Subtítulo</label>
+      <input id="subtitle" type="text" name="subtitle" [(ngModel)]="pattern.subtitle" required>
+    </div>
+
+    <div class="form-group">
+      <label for="difficulty">Dificultad</label>
+      <select id="difficulty" name="difficulty" [(ngModel)]="pattern.difficulty" required>
+        <option value="Principiante">Principiante</option>
+        <option value="Intermedio">Intermedio</option>
+        <option value="Avanzado">Avanzado</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="materials">Materiales separados por comas</label>
+      <textarea id="materials" name="materials" [(ngModel)]="materialsText" rows="3"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="abbreviations">Abreviaturas separadas por comas</label>
+      <textarea id="abbreviations" name="abbreviations" [(ngModel)]="abbreviationsText" rows="3"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Descripción</label>
+
+      <div class="quill-wrapper">
+        <quill-editor class="pattern-description-editor" name="description" [(ngModel)]="pattern.description"
+          theme="snow" [modules]="quillModules" [styles]="{ height: '300px' }"
+          (onEditorCreated)="onEditorCreated($event)">
+        </quill-editor>
+      </div>
+    </div>
+
+    <div class="opciones">
+      <label>Imagen del patrón</label>
+
+      <label>
+        <input type="radio" name="imageMode" value="upload" [ngModel]="imageMode"
+          (ngModelChange)="changeImageMode('upload')">
+        Subir imagen nueva
+      </label>
+
+      <label>
+        <input type="radio" name="imageMode" value="existing" [ngModel]="imageMode"
+          (ngModelChange)="changeImageMode('existing')">
+        Usar imagen existente
+      </label>
+    </div>
+
+    <div class="form-group" *ngIf="imageMode === 'upload'">
+      <label for="image">Subir imagen</label>
+      <input id="image" type="file" accept="image/*" (change)="onFileSelected($event)">
+    </div>
+
+    <div class="form-group" *ngIf="imageMode === 'existing'">
+      <label for="existingImage">Seleccionar imagen existente</label>
+
+      <select id="existingImage" name="existingImage" [(ngModel)]="selectedMediaId" (change)="selectExistingImage()">
+        <option value="">Selecciona una imagen</option>
+        <option *ngFor="let image of mediaItems" [value]="image.id">
+          {{ image.title }}
+        </option>
+      </select>
+    </div>
+
+    <div class="image-preview" *ngIf="pattern.imageUrl">
+      <p>Vista previa</p>
+      <img [src]="pattern.imageUrl" [alt]="pattern.title">
+    </div>
+
+    <p *ngIf="message">
+      {{ message }}
+    </p>
+
+    <button type="submit" [disabled]="isSaving">
+      {{
+      isSaving
+      ? 'Guardando...'
+      : isEditMode
+      ? 'Guardar cambios'
+      : 'Crear patrón'
+      }}
+    </button>
+    <button type="button" (click)="cancel()">
+      Cancelar
+    </button>
+  </form>
+</section>

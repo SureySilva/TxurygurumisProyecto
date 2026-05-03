@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { NgIf } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { ErrorHandleService } from '../../../services/error-handle.service';
+import { ErrorHandleService } from '../../../services/messages/error-handle.service';
 
 @Component({
   standalone: true,
@@ -13,15 +13,19 @@ import { ErrorHandleService } from '../../../services/error-handle.service';
 })
 export class LoginComponent {
 
-  email = '';
-  password = '';
-  error = '';
+  public email:string = '';
+  public password: string = '';
+  public error: string = '';
+  public message: string = '';
+
 
   constructor(
     private auth: AuthService, 
     private router: Router,
     private errorHandler: ErrorHandleService
   ) {}
+
+  
   /**
    * Inicia sesión con el correo electrónico y la contraseña proporcionados. 
    * Si el inicio de sesión es exitoso, redirige al usuario a la página principal. 
@@ -38,6 +42,7 @@ export class LoginComponent {
       .catch(err => {
         console.log("Error login:", err);
         this.error = this.errorHandler.getMessage(err);
+        this.message = '';
       });
   }
   /**
@@ -53,6 +58,17 @@ export class LoginComponent {
       })
       .catch(err => {
         this.error = 'Error al iniciar sesión con Google';
+        this.message = '';
+      });
+  }
+  resendVerificationEmail() {
+    this.auth.resendVerificationEmail(this.email)
+      .then(() => {
+        this.message = 'Correo de verificación reenviado. Por favor, revisa tu bandeja de entrada.';
+        this.error = '';
+      })
+      .catch(err => {
+        this.error = 'Error al reenviar el correo de verificación';
       });
   }
 }

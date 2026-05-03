@@ -1,0 +1,80 @@
+<section class="admin-orders">
+  <h2>Administrar pedidos</h2>
+
+  <div class="filters">
+    <button
+      *ngFor="let state of states"
+      type="button"
+      (click)="setStateFilter(state)">
+      {{ state }}
+    </button>
+  </div>
+
+  <div *ngIf="filteredOrders$ | async as orders">
+    <p *ngIf="orders.length === 0">
+      No hay pedidos con este estado.
+    </p>
+
+    <table *ngIf="orders.length > 0">
+      <thead>
+        <tr>
+          <th>Nº pedido</th>
+          <th>Cliente</th>
+          <th>Fecha</th>
+          <th>Total</th>
+          <th>Estado</th>
+          <th>Artículos</th>
+          <th>Dirección</th>
+          <th>Cambiar estado</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let order of orders">
+          <td>{{ order.id }}</td>
+
+          <td>
+            {{ order.address.fullName }}<br>
+            {{ order.address.phone }}
+          </td>
+
+          <td>
+            {{ order.createdAt.toDate() | date:'dd/MM/yyyy HH:mm' }}
+          </td>
+
+          <td>{{ order.total }} €</td>
+
+          <td>{{ order.state }}</td>
+
+          <td>
+            <ul>
+              <li *ngFor="let item of order.items">
+                {{ item.title }} x{{ item.quantity }}
+                <span *ngIf="item.color">({{ item.color }})</span>
+              </li>
+            </ul>
+          </td>
+
+          <td>
+            {{ order.address.street }}<br>
+            {{ order.address.postalCode }} {{ order.address.city }}<br>
+            {{ order.address.country }}
+          </td>
+
+          <td>
+            <select
+              [disabled]="!canAdminUpdate(order)"
+              [value]="order.state"
+              (change)="updateState(order, $event)">
+              <option
+                *ngFor="let state of getAvailableStates(order)"
+                [value]="state">
+                {{ state }}
+              </option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

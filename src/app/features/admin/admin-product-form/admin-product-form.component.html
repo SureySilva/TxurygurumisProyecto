@@ -1,0 +1,177 @@
+<form (ngSubmit)="saveProduct()" #productForm="ngForm">
+  <h2>{{ isEditMode ? 'Editar producto' : 'Crear producto' }}</h2>
+  <div>
+    <label for="title">Título</label>
+    <input
+      id="title"
+      type="text"
+      name="title"
+      [(ngModel)]="product.title"
+      required
+    >
+  </div>
+
+  <div>
+    <label for="alt">Texto alternativo</label>
+    <input
+      id="alt"
+      type="text"
+      name="alt"
+      [(ngModel)]="product.alt"
+      required
+    >
+  </div>
+
+  <div>
+    <label for="description">Descripción</label>
+    <textarea
+      id="description"
+      name="description"
+      [(ngModel)]="product.description"
+      rows="4"
+      required
+    ></textarea>
+  </div>
+
+  <div>
+    <label for="price">Precio</label>
+    <input
+      id="price"
+      type="number"
+      name="price"
+      [(ngModel)]="product.price"
+      step="0.01"
+      min="0"
+      [disabled]="!product.isForSale"
+    >
+  </div>
+
+  <label>
+  <input
+    type="radio"
+    name="imageMode"
+    value="upload"
+    [(ngModel)]="imageMode"
+    (ngModelChange)="changeImageMode('upload')"
+  >
+  Subir imagen nueva
+</label>
+
+<label>
+  <input
+    type="radio"
+    name="imageMode"
+    value="existing"
+    [(ngModel)]="imageMode"
+    (ngModelChange)="changeImageMode('existing')"
+  >
+  Usar imagen existente
+</label>
+
+<div *ngIf="imageMode === 'upload'">
+  <label for="image">Imagen nueva</label>
+  <input
+    id="image"
+    type="file"
+    accept="image/*"
+    (change)="onFileSelected($event)"
+  >
+</div>
+
+<div *ngIf="imageMode === 'existing'">
+  <label for="existingImage">Imagen existente</label>
+
+  <select
+    id="existingImage"
+    name="existingImage"
+    [(ngModel)]="selectedMediaId"
+    (change)="selectExistingImage()"
+  >
+    <option value="">Selecciona una imagen</option>
+    <option *ngFor="let image of mediaItems" [value]="image.id">
+      {{ image.title }}
+    </option>
+  </select>
+</div>
+
+<div *ngIf="product.imageUrl">
+  <p>Vista previa:</p>
+  <img [src]="product.imageUrl" [alt]="product.alt" width="150">
+</div>
+<div class="opciones">
+  <div>
+    <label>
+      <input
+        type="checkbox"
+        name="isForSale"
+        [(ngModel)]="product.isForSale"
+      >
+      Poner a la venta
+    </label>
+  </div>
+
+  <div>
+    <label>
+      <input
+        type="checkbox"
+        name="showInGallery"
+        [(ngModel)]="product.showInGallery"
+      >
+      Mostrar en galería
+    </label>
+  </div>
+</div>
+  <hr>
+
+  <div *ngIf="product.isForSale">
+    <h3>Variantes</h3>
+
+    <button type="button" (click)="addVariant()">
+      Añadir variante
+    </button>
+
+    <div
+      *ngFor="let variant of product.variants; let i = index"
+      style="margin-top: 1rem; padding: 1rem; border: 1px solid #ccc;"
+    >
+      <div>
+        <label [for]="'color-' + i">Color</label>
+        <input
+          [id]="'color-' + i"
+          type="text"
+          [name]="'color-' + i"
+          [(ngModel)]="variant.color"
+        >
+      </div>
+
+      <div>
+        <label [for]="'stock-' + i">Stock</label>
+        <input
+          [id]="'stock-' + i"
+          type="number"
+          [name]="'stock-' + i"
+          [(ngModel)]="variant.stock"
+          min="0"
+        >
+      </div>
+
+      <button type="button" (click)="removeVariant(i)" *ngIf="i>0">
+        Eliminar variante
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="errorMessage" style="color: red; margin-top: 1rem;">
+    {{ errorMessage }}
+  </div>
+
+  <div style="margin-top: 1rem;" class="opciones">
+    <button type="submit" [disabled]="isSaving">
+    {{ getSaveButtonText() }}
+    </button>
+
+    <button type="button" (click)="resetForm()" [disabled]="isSaving">
+      Limpiar
+    </button>
+  </div>
+</form>

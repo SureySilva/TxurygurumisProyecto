@@ -1,8 +1,17 @@
 <div *ngIf="product">
+  <main class="link">
+        <app-breadcrumb [items]="[
+    { label: 'Inicio', url: '/' },
+    { label: 'Tienda', url: '/tienda' },
+    { label: product.title }
+    ]">
+        </app-breadcrumb>
+    </main>
   <div class="card">
     <img [src]="product.imageUrl" [alt]="product.alt" />
     <div class="card-body">
       <h1>{{ product.title }}</h1>
+      <p>{{ product.description }}</p>
 
       <h3>Precio: {{ product.price }}€</h3>
 
@@ -11,9 +20,6 @@
 
         <select [(ngModel)]="selectedVariantIndex" (ngModelChange)="onVariantChange($event)"
           *ngIf="product.variants?.length">
-          <!-- <option *ngFor="let v of product.variants" ngValue="v" >
-            {{ v.color }} (Stock: {{ v.stock }})
-          </option> -->
           <option *ngFor="let v of product.variants; let i = index" [ngValue]="i" [disabled]="v.stock === 0">
 
             {{ v.color }}
@@ -22,7 +28,7 @@
         </select>
       </div>
       <div *ngIf="selectedVariant">
-        <p>Stock disponible: {{ selectedVariant.stock }}</p>
+        <p>Stock disponible: {{ selectedVariant.stock }} <small *ngIf="selectedVariant.stock<5 && selectedVariant.stock!=0 " style="color: red;">¡¡Últimas unidades!!</small> <small *ngIf="selectedVariant.stock==0" style="color: red;">¡¡Agotado!!</small></p>
         <div class="quantity">
           <label>Cantidad:</label>
           <input type="number" [(ngModel)]="quantity" [min]="1" [max]="selectedVariant.stock"
@@ -31,12 +37,6 @@
         <button (click)="addToCart()" [disabled]="selectedVariant.stock === 0 || quantity < 1">
           Añadir al carrito
         </button>
-      </div>
-      <div class="popup" *ngIf="showMessage">
-        ✔ Artículo añadido al carrito
-      </div>
-      <div class="popup error" *ngIf="errorMensage">
-        ❌ Cantidad solicitada excede el stock disponible
       </div>
     </div>
   </div>
