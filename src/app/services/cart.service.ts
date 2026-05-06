@@ -21,10 +21,7 @@ export class CartService {
    * Inicializa el carrito al hacer login
    */
   async init(uid: string) {
-    console.log("Inicializando carrito para UID:", uid);
     this.currentUser = uid;
-    console.log("UID en cartservice:", uid);
-
     // 1. Intentar cargar desde cache local
     const local = localStorage.getItem(`cart_${uid}`);
     if (local) {
@@ -159,11 +156,8 @@ export class CartService {
    * Guardado seguro (Firestore + local)
    */
   private async saveCart(cart: any[]) {
-    console.log("Guardando carrito para usuario:", this.currentUser);
     if (!this.currentUser) {
-      console.log("Sin usuario", this.currentUser);
       localStorage.setItem('cart_guest', JSON.stringify(cart));
-      console.log("Guardando carrito de invitado en localStorage", cart);
       return;
     }
 
@@ -180,9 +174,7 @@ export class CartService {
  */
   async mergeCartOnLogin(uid: string) {
     this.currentUser = uid;
-    console.log("Fusionando carrito para UID:", uid);
     const localCart = JSON.parse(localStorage.getItem(`cart_guest`) || '[]');
-    console.log("Carrito local antes de merge:", localCart);
     const ref = doc(this.firestore, 'carts', uid);
     const snap = await getDoc(ref);
 
@@ -191,10 +183,8 @@ export class CartService {
     if (snap.exists()) {
       firestoreCart = snap.data()['items'] || [];
     }
-    console.log("Carrito Firestore antes de merge:", firestoreCart);
     // 🔥 merge inteligente
     const mergedCart = this.mergeItems(localCart, firestoreCart);
-    console.log("Carrito fusionado:", mergedCart);
     // guardar en Firestore
     try {
       await setDoc(ref, { items: mergedCart });
@@ -233,7 +223,6 @@ export class CartService {
     const validItems = this.cartSubject.value.filter(item => item.valid !== false);
 
     if (validItems.length === 0) {
-      console.error('No hay productos válidos para comprar');
       return false;
     }
 
@@ -247,11 +236,9 @@ export class CartService {
         paypalOrderId
       });
 
-      console.log('Compra realizada:', result);
       this.clearCart();
       return true;
     } catch (error) {
-      console.error('Error en checkout:', error);
       return false;
     }
   }

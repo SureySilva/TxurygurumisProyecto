@@ -54,7 +54,6 @@ export class AdminHomeComponent implements OnInit {
         }
       },
       error: (error: unknown) => {
-        console.error('Error al cargar el contenido de inicio:', error);
         this.message = 'No se pudo cargar el contenido.';
       }
     });
@@ -73,15 +72,15 @@ export class AdminHomeComponent implements OnInit {
       await this.homeService.saveHomeContent(this.homeContent);
       this.message = 'Contenido guardado correctamente.';
     } catch (error: unknown) {
-      console.error('Error al guardar el contenido:', error);
       this.message = 'No se pudo guardar el contenido.';
     } finally {
       this.isSaving = false;
     }
   }
+  
   /**
-* Cancela la edición y vuelve al listado.
-*/
+  * Cancela la edición y vuelve al listado.
+  */
   public cancel(): void {
     this.router.navigate(['/admin/']);
   }

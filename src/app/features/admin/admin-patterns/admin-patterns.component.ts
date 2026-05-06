@@ -60,13 +60,10 @@ export class AdminPatternsComponent {
     if (!pattern.id) {
       return;
     }
-
     const confirmed: boolean = confirm(`¿Eliminar el patrón "${pattern.title}"?`);
-
     if (!confirmed) {
       return;
     }
-
     await this.patternService.deletePattern(pattern.id);
   }
 }

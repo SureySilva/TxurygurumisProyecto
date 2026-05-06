@@ -48,7 +48,7 @@ export class AdminOrdersComponent {
   ];
 
   /**
-   * Crea una instancia del componente.
+   * Crea una instancia del componente. 
    *
    * @param orderService Servicio de pedidos.
    */

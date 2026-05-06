@@ -28,9 +28,6 @@ export const sendContact = onRequest(
       try {
         const user = GMAIL_USER.value();
         const pass = GMAIL_PASS.value();
-        console.log("USER LENGTH:", user?.length);
-        console.log("PASS LENGTH:", pass?.length);
-        console.log("USER:", user);
         if (req.method !== "POST") {
           res.status(405).send("Método no permitido");
           return;

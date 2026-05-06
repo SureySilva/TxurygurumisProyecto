@@ -8,8 +8,8 @@
 					class="flecha" /></button>
 			<div class="dropdown-content" [class.show]="isOpen">
 				<a [routerLinkActive]="['seleccionado']" [routerLink]="['/guias/materiales']">Materiales</a>
-				<a href="#">Puntadas</a>
-				<a href="#">Primeros pasos</a>
+				<a [routerLinkActive]="['seleccionado']" [routerLink]="['/guias/puntadas']">Puntadas</a>
+				<a [routerLinkActive]="['seleccionado']" [routerLink]="['/guias/primeros-pasos']">Primeros pasos</a>
 			</div>
 		</li>
 
@@ -51,14 +51,14 @@
 								</a>
 							</ng-template>
 
-							<button (click)="logout()">Logout</button>
+							<button (click)="logout()">Cerrar sesión</button>
 						</div>
 					</div>
 				</ng-container>
 			</ng-container>
 
 			<ng-template #login>
-				<a routerLink="/login">Login</a>
+				<a routerLink="/login">Iniciar sesión</a>
 			</ng-template>
 		</li>
 	</ul>

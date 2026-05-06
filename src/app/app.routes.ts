@@ -9,84 +9,65 @@ import { AdminProductsComponent } from './features/admin/admin-products/admin-pr
 import { AdminHomeComponent } from './features/admin/admin-home/admin-home.component';
 import { AdminOrdersComponent } from './features/admin/admin-orders/admin-orders.component';
 import { AdminPatternFormComponent } from './features/admin/admin-pattern-form/admin-pattern-form.component';
+import { OrdersComponent } from './features/user/orders/orders.component';
+import { ProfileComponent } from './features/user/profile/profile.component';
+import { ResetPasswordComponent } from './features/user/reset-password/reset-password.component';
+import { RegisterComponent } from './features/user/register/register.component';
+import { LoginComponent } from './features/user/login/login.component';
+import { ContactComponent } from './features/contact/contact.component';
+import { PatternInfoComponent } from './features/pattern-info/pattern-info.component';
+import { PatternsComponent } from './features/patterns/patterns.component';
+import { CartComponent } from './features/cart/cart.component';
+import { ShopComponent } from './features/shop/shop.component';
+import { GalleryComponent } from './features/gallery/gallery.component';
+import { GuidesComponent } from './features/guides/guides.component';
+import { HomeComponent } from './features/home/home.component';
 
 export const routes: Routes = [{
-  path: '',
-  loadComponent: () =>
-    import('./features/home/home.component')
-      .then(m => m.HomeComponent)
+  path: '', component: HomeComponent
 },
 {
   path: 'guias',
-  loadComponent: () =>
-    import('./features/guides/guides.component')
-      .then(m => m.GuidesComponent)
+  children: [
+    { path: '', component: GuidesComponent},
+    { path: 'materiales', component: GuidesComponent},
+    { path: 'puntadas', component: GuidesComponent },
+    { path: 'primeros-pasos', component: GuidesComponent }
+  ],
 },
 {
-  path: 'galeria',
-  loadComponent: () =>
-    import('./features/gallery/gallery.component')
-      .then(m => m.GalleryComponent)
+  path: 'galeria', component: GalleryComponent
 },
 {
-  path: 'tienda',
-  loadComponent: () =>
-    import('./features/shop/shop.component')
-      .then(m => m.ShopComponent)
+  path: 'tienda', component: ShopComponent
 },
 {
-  path: 'carrito',
-  loadComponent: () =>
-    import('./features/cart/cart.component')
-      .then(m => m.CartComponent)
+  path: 'carrito', component: CartComponent
 },
 {
-  path: 'patrones',
-  loadComponent: () =>
-    import('./features/patterns/patterns.component')
-      .then(m => m.PatternsComponent)
+  path: 'patrones', component: PatternsComponent
 },
 { path: 'product/:id', component: ProductComponent },
 {
-  path: 'pattern-info/:id',
-  loadComponent: () => import('./features/pattern-info/pattern-info.component')
-    .then(m => m.PatternInfoComponent)
+  path: 'pattern-info/:id', component: PatternInfoComponent
 },
 {
-  path: 'contacto',
-  loadComponent: () =>
-    import('./features/contact/contact.component')
-      .then(m => m.ContactComponent)
+  path: 'contacto', component: ContactComponent
 },
 {
-  path: 'login',
-  loadComponent: () =>
-    import('./features/user/login/login.component')
-      .then(m => m.LoginComponent)
+  path: 'login', component: LoginComponent
 },
 {
-  path: 'register',
-  loadComponent: () =>
-    import('./features/user/register/register.component')
-      .then(m => m.RegisterComponent)
+  path: 'register', component: RegisterComponent
 },
 {
-  path: 'reset-password',
-  loadComponent: () =>
-    import('./features/user/reset-password/reset-password.component')
-      .then(m => m.ResetPasswordComponent)
+  path: 'reset-password', component: ResetPasswordComponent
 },
 {
-  path: 'perfil',
-  loadComponent: () =>
-    import('./features/user/profile/profile.component')
-      .then(m => m.ProfileComponent)
+  path: 'perfil', component: ProfileComponent 
 },
 {
-  path: 'mis-pedidos',
-  loadComponent: () =>
-    import('./features/user/orders/orders.component')
-      .then(m => m.OrdersComponent)
+  path: 'mis-pedidos',component: OrdersComponent
 },
   {
   path: 'admin',

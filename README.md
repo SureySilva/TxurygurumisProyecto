@@ -1,59 +1,109 @@
-# TxurygurumisProyecto
+![Angular](https://img.shields.io/badge/Angular-19-red)
+![Firebase](https://img.shields.io/badge/Firebase-Backend-orange)
+![License](https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.0.
+# Txurygurumis
 
-## Development server
+Txurygurumis es una aplicación web desarrollada como proyecto final del ciclo de Desarrollo de Aplicaciones Web (DAW).
 
-To start a local development server, run:
+La aplicación combina funcionalidades de comercio electrónico con la publicación de contenido relacionado con el crochet y los amigurumis, permitiendo tanto la venta de productos como la gestión de patrones.
+
+---
+
+# Características principales
+
+## Usuarios
+- Registro e inicio de sesión
+- Recuperación de contraseña
+- Gestión de perfil
+- Gestión de pedidos
+
+## Tienda
+- Visualización de productos
+- Carrito de compra persistente
+- Gestión de pedidos
+- Pago mediante PayPal Sandbox
+
+## Administración
+- Gestión de productos y galería
+- Gestión de patrones mediante Quill Editor
+- Gestión de pedidos
+- Cambio de estado de pedidos
+
+## Backend
+- Firebase Authentication
+- Firestore
+- Cloud Functions
+- Firebase Hosting
+
+---
+
+# Tecnologías utilizadas
+
+## Frontend
+- Angular
+- Bootstrap
+
+## Backend
+- Firebase
+  - Firestore
+  - Authentication
+  - Cloud Functions
+  - Hosting
+
+## Otros servicios
+- PayPal Sandbox
+- Quill Editor
+
+
+---
+
+# Instalación del proyecto
+
+## Clonar repositorio
+
+```bash
+git clone https://github.com/SureySilva/TxurygurumisProyecto.git
+```
+## Instalar dependencias
+
+```bash
+npm install
+```
+## Ejecutar la aplicación
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Ejecutar Firebase Functions
 
 ```bash
-ng generate component component-name
+firebase emulators:start
 ```
+---
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+# Despliegue
 
-```bash
-ng generate --help
-```
+Aplicación desplegada en Firebase Hosting:
 
-## Building
+https://txurygurumis.web.app/
 
-To build the project run:
+# Funcionalidades técnicas destacadas
 
-```bash
-ng build
-```
+- Uso de componentes standalone en Angular
+- Protección de rutas mediante guards
+- Actualización de datos y estados de pedidos en tiempo real mediante Firestore
+- Gestión backend mediante Cloud Functions
+- Sanitización de datos para mejorar la seguridad
+- Arquitectura basada en servicios
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+# Autor
 
-## Running unit tests
+**Surey Silvia Silva Moya**
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+# Licencia
 
-```bash
-ng test
-```
+Este proyecto se distribuye bajo la licencia:
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+[CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/)

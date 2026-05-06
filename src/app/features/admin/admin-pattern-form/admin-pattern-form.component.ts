@@ -8,6 +8,7 @@ import { MediaItem } from '../../../models/media.model';
 import { MediaService } from '../../../services/admin/media.service';
 import { QuillModule } from 'ngx-quill';
 import { getDownloadURL, ref, uploadBytes, Storage } from '@angular/fire/storage';
+import { NotificationService } from '../../../services/messages/notification.service';
 
 @Component({
   selector: 'app-admin-pattern-form',
@@ -72,6 +73,7 @@ export class AdminPatternFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private storage: Storage,
+    private notificationService: NotificationService
   ) { }
 
   /**
@@ -101,7 +103,7 @@ export class AdminPatternFormComponent implements OnInit {
         this.mediaItems = items;
       },
       error: (error: unknown) => {
-        console.error('Error al cargar imágenes:', error);
+        this.message = 'No se pudieron cargar las imágenes existentes.';
       }
     });
   }
@@ -120,7 +122,6 @@ export class AdminPatternFormComponent implements OnInit {
         this.abbreviationsText = pattern.abbreviations.join(', ');
       },
       error: (error: unknown) => {
-        console.error('Error al cargar el patrón:', error);
         this.message = 'No se pudo cargar el patrón.';
       }
     });
@@ -225,7 +226,6 @@ export class AdminPatternFormComponent implements OnInit {
 
       this.router.navigate(['/admin/patrones']);
     } catch (error: unknown) {
-      console.error('Error al guardar patrón:', error);
       this.message = 'No se pudo guardar el patrón.';
     } finally {
       this.isSaving = false;
@@ -252,7 +252,7 @@ export class AdminPatternFormComponent implements OnInit {
   /**
    * Abre el selector de archivos y sube una imagen para insertarla en Quill.
    *
-   * @returns void
+   * @returns void 
    */
   private selectAndUploadQuillImage(): void {
     const input: HTMLInputElement = document.createElement('input');
@@ -272,7 +272,7 @@ export class AdminPatternFormComponent implements OnInit {
         const imageUrl: string = await this.uploadQuillImage(file);
         this.insertImageInEditor(imageUrl);
       } catch (error: unknown) {
-        console.error('Error al subir la imagen del patrón:', error);
+        this.message = 'Error al subir la imagen del patrón. Inténtalo de nuevo.';
       }
     };
   }

@@ -1,12 +1,11 @@
-// import { CanActivateFn } from '@angular/router';
-
-// export const authGuard: CanActivateFn = (route, state) => {
-//   return true;
-// };
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { Auth } from '@angular/fire/auth';
-
+/**
+ * Guard que permite acceso solo a usuarios autenticados.
+ *
+ * @returns Promise<boolean> False si el usuario no está autenticado, redirige a la página de login. 
+ */
 export const authGuard: CanActivateFn = () => {
   const auth = inject(Auth);
   const router = inject(Router);
