@@ -44,16 +44,6 @@ export class UserService {
     });
   }
 
-  /**
-   *  Actualiza el perfil del usuario
-   * @param data  Datos a actualizar (ej: { name: "Nuevo Nombre" })
-   * @returns  Una promesa que se resuelve cuando la actualización es exitosa o se rechaza con un error.
-   */
-  updateUser(data: any) {
-    const fn = httpsCallable(this.functions, 'updateUser');
-    return fn(data);
-  }
-
   /** Obtener datos del usuario actual de Firestore */
   getUser() {
     return this.currentUser$;
