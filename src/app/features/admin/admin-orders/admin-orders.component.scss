@@ -26,6 +26,11 @@
 .filters button:hover {
   background-color: #f0d9ff;
 }
+.filters button.active-filter {
+  background-color: #BA04FD;
+  color: white;
+  font-weight: 600;
+}
 
 .admin-orders table {
   width: 100%;

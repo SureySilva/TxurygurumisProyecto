@@ -47,6 +47,8 @@ export class AdminOrdersComponent {
     'cancelado'
   ];
 
+  public selectedState: string = 'todos';
+
   /**
    * Crea una instancia del componente. 
    *
@@ -77,6 +79,7 @@ export class AdminOrdersComponent {
    */
   public setStateFilter(state: OrderState | 'todos'): void {
     this.stateFilterSubject.next(state);
+    this.selectedState = state;
   }
 
   /**

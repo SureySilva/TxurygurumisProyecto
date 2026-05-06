@@ -2,13 +2,15 @@
   <h2>Administrar pedidos</h2>
 
   <div class="filters">
-    <button
-      *ngFor="let state of states"
-      type="button"
-      (click)="setStateFilter(state)">
-      {{ state }}
-    </button>
-  </div>
+  <button
+    *ngFor="let state of states"
+    type="button"
+    (click)="setStateFilter(state)"
+    [ngClass]="{ 'active-filter': selectedState === state }">
+
+    {{ state }}
+  </button>
+</div>
 
   <div *ngIf="filteredOrders$ | async as orders">
     <p *ngIf="orders.length === 0">
