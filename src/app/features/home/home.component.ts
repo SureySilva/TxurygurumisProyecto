@@ -12,6 +12,7 @@ import { HomeService } from '../../services/admin/home.service';
 
 @Component({
   selector: 'app-home',
+  standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'

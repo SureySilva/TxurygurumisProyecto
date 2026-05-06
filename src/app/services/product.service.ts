@@ -48,9 +48,7 @@ export class ProductService {
       const storageRef = ref(this.storage, filePath);
 
       await uploadBytes(storageRef, file);
-      console.log("Añado imagen");
       const downloadURL: string = await getDownloadURL(storageRef);
-      console.log("recibo url");
       productToSave.imageUrl = downloadURL;
       productToSave.storagePath = filePath;
     }

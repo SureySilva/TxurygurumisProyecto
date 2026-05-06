@@ -19,15 +19,25 @@ export class PatternInfoComponent {
     this.loadPattern();
   }
 
+  /**
+   *  Carga el patrón actual basado en el ID de la ruta. Si no se encuentra un ID, no hace nada.
+   * @return void 
+   */
   loadPattern(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) return;
     this.patternsService.getPattern(id).subscribe(pattern => {
 
       this.pattern = pattern;
-      console.log(pattern.description)
     });
   }
+
+  /**
+   *  Convierte una lista de elementos en filas para mostrar en la plantilla.
+   * @param items  La lista de elementos a convertir en filas.
+   * @param cols  El número de columnas por fila.
+   * @returns  Una matriz de filas, donde cada fila es una matriz de elementos.
+   */
   getRows(items: string[], cols: number): string[][] {
     const rows: string[][] = [];
     for (let i = 0; i < items.length; i += cols) {

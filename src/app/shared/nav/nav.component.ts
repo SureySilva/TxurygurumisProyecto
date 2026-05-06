@@ -20,6 +20,7 @@ export class NavComponent {
   profile$!: Observable<UserProfile | null>;
   public authUser$: Observable<User | null>;
   public isAdmin$: Observable<boolean>;
+
   constructor(private authService: AuthService, private userService: UserService,
     private auth: Auth  ) {
    this.profile$ = this.userService.getCurrentProfile();
@@ -28,14 +29,21 @@ export class NavComponent {
   }
   
 
-
+/**
+ * Alterna el estado del menú de navegación.
+ */
 toggleMenu(): void {
   this.isOpen = !this.isOpen;
 }
+/**
+ * Alterna el estado del menú de usuario.
+ */
 toggleUserMenu(): void {
   this.userMenuOpen = !this.userMenuOpen;
 }
-
+/**
+ * Cierra los menús y llama al servicio de autenticación para cerrar la sesión del usuario.
+ */
 logout(): void {
   this.isOpen = false;
   this.userMenuOpen = false;

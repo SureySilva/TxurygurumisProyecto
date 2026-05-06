@@ -55,7 +55,6 @@ const isValidObjectStrings = (obj: Record<string, unknown>): boolean => {
 
 // Función para crear una cuenta de usuario con Google
 export const syncUser = onCall(async (request) => {
-  console.log("AUTH UID:", request.auth?.uid);
   const uid = request.auth?.uid;
 
   if (!uid) {

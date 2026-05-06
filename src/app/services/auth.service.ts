@@ -26,9 +26,7 @@ export class AuthService {
   ) {
     this.user$ = user(this.auth);
     onAuthStateChanged(this.auth, async (user) => {
-      console.log("Auth state:", user);
       if (user?.uid) {
-        console.log("Usuario autenticado:", user.uid);
         await this.cartService.mergeCartOnLogin(user.uid);
       } else {
         this.cartService.loadGuestCart();
@@ -118,7 +116,6 @@ export class AuthService {
   async resendVerificationEmail(email: string) {
     try {
       const user = this.user;
-      console.log("Usuario actual para reenviar verificación:", user);
       if (user && user.email === email && !user.emailVerified) {
         await sendEmailVerification(user);
       } else {

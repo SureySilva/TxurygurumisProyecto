@@ -29,7 +29,6 @@ export class UserService {
     ) {
     onAuthStateChanged(this.auth, async (userAuth) => {
       if (!userAuth) {
-        console.log("No hay usuario autenticado");
         this.currentUserSubject.next(null);
         return;
       }
@@ -37,7 +36,6 @@ export class UserService {
       const userDoc = await getDoc(doc(this.firestore, "users", userAuth.uid));
 
       if (!userDoc.exists()) {
-        console.log("No existe el documento del usuario en Firestore");
         this.currentUserSubject.next(null);
         return;
       }

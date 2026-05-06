@@ -62,8 +62,6 @@ a.seleccionado {
 
 body{
     background-color: #d0d0d0;
-    margin: 0;
-    height: 100vh;
 }
 .marca{
     font-family:"Segoe Script";
@@ -71,7 +69,7 @@ body{
     text-shadow: #BA04FD 2px 2px 4px;
 }
 
-html, body { height: 100%; }
+html, body { min-height: 100%; margin: 0;}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 /** QUILL EDITOR - Página admin home**/

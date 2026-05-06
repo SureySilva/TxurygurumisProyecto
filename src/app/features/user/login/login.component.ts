@@ -35,12 +35,10 @@ export class LoginComponent {
     
     this.auth.login(this.email, this.password)
       .then(() => {
-        console.log('Login correcto');
         this.router.navigate(['/']);
         
       })
       .catch(err => {
-        console.log("Error login:", err);
         this.error = this.errorHandler.getMessage(err);
         this.message = '';
       });
@@ -53,7 +51,6 @@ export class LoginComponent {
   loginWithGoogle() {
     this.auth.logWithGoogle()
       .then(() => {
-        console.log('Login con Google correcto');
         this.router.navigate(['/']);
       })
       .catch(err => {
@@ -61,6 +58,11 @@ export class LoginComponent {
         this.message = '';
       });
   }
+  /**
+   * Envía un correo electrónico de verificación al correo proporcionado.
+   * Si el envío es exitoso, muestra un mensaje de éxito. 
+   * Si ocurre un error, muestra un mensaje de error genérico.
+   */
   resendVerificationEmail() {
     this.auth.resendVerificationEmail(this.email)
       .then(() => {
