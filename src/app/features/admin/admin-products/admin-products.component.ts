@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { ProductService } from '../../../services/product.service';
+import { ProductAdminService } from '../../../services/admin/product.service';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { Product } from '../../../models/product.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ProductService } from '../../../services/product.service';
 
 @Component({
   selector: 'app-admin-products',
@@ -22,7 +23,8 @@ export class AdminProductsComponent {
   public filter$ = this.filterSubject.asObservable();
 
 
-  constructor(private productService: ProductService, private router: Router) {
+  constructor(private productAdminService: ProductAdminService,
+    private productService: ProductService, private router: Router) {
     this.products$ = this.productService.getProducts();
     this.filteredProducts$ = combineLatest([
       this.products$,
@@ -87,7 +89,7 @@ export class AdminProductsComponent {
     }
 
     try {
-      await this.productService.deleteProduct(product);
+      await this.productAdminService.deleteProduct(product);
     } catch (error: unknown) {
       console.error('Error al eliminar producto:', error);
     }

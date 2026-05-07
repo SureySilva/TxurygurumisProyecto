@@ -19,7 +19,7 @@
                 </ul>
                 <p>ABREVIATURAS</p>
                 <table>
-                    <tr *ngFor="let row of getRows(pattern.abbreviations, 2)">
+                    <tr class="fila" *ngFor="let row of getRows(pattern.abbreviations, 2)">
                         <td *ngFor="let item of row">
                             {{ item }}
                         </td>

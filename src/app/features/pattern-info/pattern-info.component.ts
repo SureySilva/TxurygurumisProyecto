@@ -29,7 +29,9 @@ export class PatternInfoComponent {
     this.patternsService.getPattern(id).subscribe(pattern => {
 
       this.pattern = pattern;
+      console.log(this.pattern.description);
     });
+    
   }
 
   /**

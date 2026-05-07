@@ -170,6 +170,10 @@
     {{ getSaveButtonText() }}
     </button>
 
+     <button type="button" (click)="cancelEdit()" [disabled]="isSaving">
+      Cancelar
+    </button>
+
     <button type="button" (click)="resetForm()" [disabled]="isSaving">
       Limpiar
     </button>

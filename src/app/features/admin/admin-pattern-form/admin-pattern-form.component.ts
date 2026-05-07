@@ -42,7 +42,7 @@ export class AdminPatternFormComponent implements OnInit {
         [{ list: 'ordered' }, { list: 'bullet' }],
         [{ 'font': [] }],
         [{ 'align': [] }],
-        [{ 'size': ['small', false, 'large', 'huge'] }],  
+        [{ 'size': ['small', false, 'large', 'huge'] }],
         [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
         ['link', 'image'],
         ['clean']
@@ -208,7 +208,12 @@ export class AdminPatternFormComponent implements OnInit {
 
     this.pattern.materials = this.parseCommaSeparated(this.materialsText);
     this.pattern.abbreviations = this.parseCommaSeparated(this.abbreviationsText);
+    if (this.quillEditor) {
+      this.pattern.description = this.quillEditor.root.innerHTML;
+    }
+
     this.pattern.description = this.cleanDescription(this.pattern.description);
+
 
     try {
       if (this.isEditMode && this.patternId) {
@@ -270,6 +275,7 @@ export class AdminPatternFormComponent implements OnInit {
 
       try {
         const imageUrl: string = await this.uploadQuillImage(file);
+        console.log('Imagen subida con éxito. URL:', imageUrl);
         this.insertImageInEditor(imageUrl);
       } catch (error: unknown) {
         this.message = 'Error al subir la imagen del patrón. Inténtalo de nuevo.';
@@ -299,11 +305,23 @@ export class AdminPatternFormComponent implements OnInit {
    * @returns void
    */
   private insertImageInEditor(imageUrl: string): void {
+    // const range = this.quillEditor.getSelection(true);
+    // const index: number = range ? range.index : this.quillEditor.getLength();
+
+    // this.quillEditor.insertEmbed(index, 'image', imageUrl);
+    // this.quillEditor.setSelection(index + 1);
+    if (!this.quillEditor) {
+      this.message = 'El editor todavía no está listo.';
+      return;
+    }
+
     const range = this.quillEditor.getSelection(true);
     const index: number = range ? range.index : this.quillEditor.getLength();
 
-    this.quillEditor.insertEmbed(index, 'image', imageUrl);
-    this.quillEditor.setSelection(index + 1);
+    this.quillEditor.insertEmbed(index, 'image', imageUrl, 'user');
+    this.quillEditor.setSelection(index + 1, 0, 'user');
+
+    this.pattern.description = this.cleanDescription(this.quillEditor.root.innerHTML);
   }
 
   /**
@@ -312,9 +330,9 @@ export class AdminPatternFormComponent implements OnInit {
  * @param html HTML del editor.
  * @returns HTML limpio.
  */
-private cleanDescription(html: string): string {
-  return html
-    .replace(/&nbsp;/g, ' ')
-    .replace(/\u00A0/g, ' ');
-}
+  private cleanDescription(html: string): string {
+    return html
+      .replace(/&nbsp;/g, ' ')
+      .replace(/\u00A0/g, ' ');
+  }
 }

@@ -1,7 +1,7 @@
 <section class="admin-pattern-form">
   <h2>{{ isEditMode ? 'Editar patrón' : 'Crear patrón' }}</h2>
 
-  <form (ngSubmit)="savePattern()">
+  <form class="form" (ngSubmit)="savePattern()">
     <div class="form-group">
       <label for="title">Título</label>
       <input id="title" type="text" name="title" [(ngModel)]="pattern.title" required>
@@ -82,18 +82,19 @@
     <p *ngIf="message">
       {{ message }}
     </p>
-
-    <button type="submit" [disabled]="isSaving">
-      {{
-      isSaving
-      ? 'Guardando...'
-      : isEditMode
-      ? 'Guardar cambios'
-      : 'Crear patrón'
-      }}
-    </button>
-    <button type="button" (click)="cancel()">
-      Cancelar
-    </button>
+    <div class="buttons">
+      <button type="submit" [disabled]="isSaving">
+        {{
+        isSaving
+        ? 'Guardando...'
+        : isEditMode
+        ? 'Guardar cambios'
+        : 'Crear patrón'
+        }}
+      </button>
+      <button type="button" (click)="cancel()">
+        Cancelar
+      </button>
+    </div>
   </form>
 </section>

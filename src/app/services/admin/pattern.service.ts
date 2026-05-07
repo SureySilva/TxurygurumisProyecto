@@ -81,13 +81,22 @@ export class PatternService {
     delete patternToSave.id;
 
     if (file) {
-      const filePath: string = `images/${file.name}`;
+      const filePath: string = `patterns/${Date.now()}-${file.name}`;
       const storageRef = ref(this.storage, filePath);
 
       await uploadBytes(storageRef, file);
 
       patternToSave.imageUrl = await getDownloadURL(storageRef);
       patternToSave.storagePath = filePath;
+      const mediaRef = collection(this.firestore, 'media');
+
+      await addDoc(mediaRef, {
+        imageUrl: patternToSave.imageUrl,
+        storagePath: filePath,
+        title: patternToSave.title,
+        alt: patternToSave.title,
+        createdAt: serverTimestamp()
+      });
     }
 
     const patternsRef = collection(this.firestore, "patterns");
@@ -120,6 +129,15 @@ export class PatternService {
 
       patternToUpdate.imageUrl = await getDownloadURL(storageRef);
       patternToUpdate.storagePath = filePath;
+      const mediaRef = collection(this.firestore, 'media');
+
+      await addDoc(mediaRef, {
+        imageUrl: patternToUpdate.imageUrl,
+        storagePath: filePath,
+        title: patternToUpdate.title,
+        alt: patternToUpdate.title,
+        createdAt: serverTimestamp()
+      });
     }
 
     await updateDoc(patternRef, patternToUpdate);

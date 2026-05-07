@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { Product, Variant } from '../../../models/product.model';
-import { ProductService } from '../../../services/product.service';
+import { ProductAdminService } from '../../../services/admin/product.service';
 import { FormsModule } from '@angular/forms';
 import { NgFor, NgIf } from '@angular/common';
 import { Timestamp } from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MediaItem } from '../../../models/media.model';
 import { MediaService } from '../../../services/admin/media.service';
+import { ProductService } from '../../../services/product.service';
 
 
 /**
@@ -51,7 +52,7 @@ export class AdminProductFormComponent {
    *
    * @param productService Servicio de productos.
    */
-  constructor(private productService: ProductService, private route: ActivatedRoute,
+  constructor(private productAdminService: ProductAdminService, private productService: ProductService, private route: ActivatedRoute,
     private router: Router, private mediaService: MediaService) { }
 
   /**
@@ -245,13 +246,13 @@ export class AdminProductFormComponent {
 
     try {
       if (this.isEditMode && this.productId) {
-        await this.productService.updateProduct(
+        await this.productAdminService.updateProduct(
           this.productId,
           this.product,
           this.selectedFile
         );
       } else {
-        await this.productService.createProduct(
+        await this.productAdminService.createProduct(
           this.product,
           this.selectedFile
         );
@@ -266,6 +267,13 @@ export class AdminProductFormComponent {
     }
   }
 
+  /**
+   * Cancela la edición y vuelve al listado de productos.
+   * @return void
+   */
+  public cancelEdit(): void {
+    this.router.navigate(['/admin/productos']);
+  }
 
   /**
    * Reinicia el formulario.
