@@ -3,10 +3,11 @@ import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { ErrorHandleService } from '../../../services/messages/error-handle.service';
 import { AuthService } from '../../../services/auth.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-register',
-  imports: [FormsModule, NgIf],
+  imports: [FormsModule, NgIf, RouterLink],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
@@ -18,6 +19,7 @@ export class RegisterComponent {
   success = false;
   error = '';
   showMessage: boolean = false;
+  acceptPrivacy: boolean = false;
 
   constructor(
     private auth: AuthService,
@@ -35,19 +37,23 @@ export class RegisterComponent {
       this.error = 'La contraseña debe tener entre 6 y 20 caracteres';
       return;
     }
-      this.auth.createUserAccount({
-        email: this.email,
-        password: this.password,
-        displayName: this.displayName,
-      }).then(() => {      
+    if (!this.acceptPrivacy) {
+      this.error = 'Debes aceptar la política de privacidad.';
+      return;
+    }
+    this.auth.createUserAccount({
+      email: this.email,
+      password: this.password,
+      displayName: this.displayName,
+    }).then(() => {
       this.showMessage = true;
 
     }).catch(err => {
-        console.error("Error en registro:", err);
-        this.error = this.errorHandler.getMessage(err.message);
-        setTimeout(() => {
-          this.error = '';
-        }, 5000);
-      });
+      console.error("Error en registro:", err);
+      this.error = this.errorHandler.getMessage(err.message);
+      setTimeout(() => {
+        this.error = '';
+      }, 5000);
+    });
   }
 }

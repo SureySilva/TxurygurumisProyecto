@@ -59,7 +59,7 @@ h4,p{
 //para que se ajusten al contenedor.
 :host ::ng-deep .descripcion p img {
   display: block !important;
-  width: 100% !important;
+  width: auto !important;
   max-width: 100% !important;
   height: auto !important;
   margin: 1rem auto !important;

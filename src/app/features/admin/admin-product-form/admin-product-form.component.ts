@@ -207,7 +207,7 @@ export class AdminProductFormComponent {
       return false;
     }
 
-    if (!this.selectedFile && !this.isEditMode) {
+    if (!this.selectedFile && !this.isEditMode && !this.product.imageUrl) {
       this.errorMessage = 'Debes seleccionar una imagen.';
       return false;
     }

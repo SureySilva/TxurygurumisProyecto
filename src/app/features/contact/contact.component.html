@@ -43,7 +43,14 @@
     </div>
   </div>
   <!-- Bot -->
-  <input type="text" name="website" style="display:none">
+  <input
+  type="text"
+  name="honeypot"
+  ngModel
+  autocomplete="off"
+  tabindex="-1"
+  aria-hidden="true"
+  class="honeypot">
 
   <!-- Botones -->
   <button type="submit" [disabled]="!contactForm.valid">Enviar</button>

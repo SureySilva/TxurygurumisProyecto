@@ -27,82 +27,107 @@ export class ShopComponent {
   filteredItems$!: Observable<Product[]>;
   hasItems = false;
   cartCount = 0;
- 
-   constructor(private router: Router, private userService: UserService,
-    private cartService: CartService, private productService: ProductService) 
-    {
-     this.items$ = this.productService.getStoreProducts();
-     
-   }
-   
 
- 
-ngOnInit(): void {
-  this.updateCartCount();
- 
+  constructor(private router: Router, private userService: UserService,
+    private cartService: CartService, private productService: ProductService) {
+    this.items$ = this.productService.getStoreProducts();
 
-  const search$ = this.searchSubject.pipe(
-    startWith(''),
-    debounceTime(300),
-    distinctUntilChanged()
-  );
+  }
 
-  const sort$ = this.sortSubject.asObservable();
 
-  this.filteredItems$ = combineLatest([this.items$, search$, sort$]).pipe(
-    map(([items, searchTerm, sortType]) => {
+  /**
+   * Inicializa el componente, configurando la actualización del contador del carrito 
+   * y aplicando los filtros de búsqueda y ordenación a los productos.
+   * Se suscribe a los cambios en el carrito para mantener actualizado el contador de productos 
+   * y el estado de si hay productos o no.
+   * Configura un flujo de datos que combina la lista de productos con los términos de búsqueda
+   * y criterios de ordenación para generar una lista filtrada y ordenada de productos que se muestra en la interfaz.
+   * 
+   * @returns void
+   */
+  ngOnInit(): void {
+    this.updateCartCount();
 
-      // BUSCAR
-      let result = items.filter(product =>
-        product.title.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      const getTime = (item: Product) => item.createdAt?.toMillis?.() ?? 0;
-      // ORDENAR
-      switch (sortType) {
 
-        case 'price-asc':
-          result = [...result].sort((a, b) => a.price - b.price);
-          break;
+    const search$ = this.searchSubject.pipe(
+      startWith(''),
+      debounceTime(300),
+      distinctUntilChanged()
+    );
 
-        case 'price-desc':
-          result = [...result].sort((a, b) => b.price - a.price);
-          break;
+    const sort$ = this.sortSubject.asObservable();
 
-        case 'new':
-          result = [...result].sort((a, b) => getTime(b) - getTime(a));
-          break;
+    this.filteredItems$ = combineLatest([this.items$, search$, sort$]).pipe(
+      map(([items, searchTerm, sortType]) => {
 
-      }
+        // BUSCAR
+        let result = items.filter(product =>
+          product.title.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        const getTime = (item: Product) => item.createdAt?.toMillis?.() ?? 0;
+        // ORDENAR
+        switch (sortType) {
 
-      return result;
+          case 'price-asc':
+            result = [...result].sort((a, b) => a.price - b.price);
+            break;
 
-    })
-  );
+          case 'price-desc':
+            result = [...result].sort((a, b) => b.price - a.price);
+            break;
 
-}
-updateCartCount() {
-  this.cartService.cart$.subscribe(items => {
-  this.cartCount = items.reduce((total, item) => total + item.quantity, 0);
-  this.hasItems = this.cartCount > 0;
-});
-}
-onSearch(value: string): void {
-  this.searchSubject.next(value);
-}
-onSort(value: string): void {
-  this.sortSubject.next(value);
-}
-/**
- * Navega al detalle del producto enviando el objeto
- */
-openProduct(item: Product): void {
+          case 'new':
+            result = [...result].sort((a, b) => getTime(b) - getTime(a));
+            break;
 
-  this.router.navigate(['/product', item.id], {
-    state: { product: item }
-  });
+        }
 
-}
-gotoCart(): void {
-  this.router.navigate(['/carrito']);
-}
+        return result;
+
+      })
+    );
+
+  }
+
+  /**
+   * Actualiza el contador de productos en el carrito y el estado de si hay productos o no.
+   * Se suscribe a los cambios en el carrito para recalcular el total cada vez que se modifica.
+   * 
+   * @returns void 
+   */
+  updateCartCount() {
+    this.cartService.cart$.subscribe(items => {
+      this.cartCount = items.reduce((total, item) => total + item.quantity, 0);
+      this.hasItems = this.cartCount > 0;
+    });
+  }
+  /**
+   * Actualiza el término de búsqueda para filtrar los productos.
+   * 
+   * @param value Término de búsqueda ingresado por el usuario.
+   * @returns void
+   */
+  onSearch(value: string): void {
+    this.searchSubject.next(value);
+  }
+  /**
+   * Actualiza el criterio de ordenación para los productos.
+   * @param value  Criterio de ordenación seleccionado por el usuario.
+   */
+  onSort(value: string): void {
+    this.sortSubject.next(value);
+  }
+  /**
+   * Navega al detalle del producto enviando el objeto
+   */
+  openProduct(item: Product): void {
+
+    this.router.navigate(['tienda/producto', item.id], {
+      state: { product: item }
+    });
+
+  }
+  gotoCart(): void {
+    this.router.navigate(['/carrito']);
+  }
 }

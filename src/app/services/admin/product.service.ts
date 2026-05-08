@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Product } from '../../models/product.model';
-import { doc, serverTimestamp, collection, addDoc, updateDoc, Firestore } from '@angular/fire/firestore';
+import { doc, serverTimestamp, collection, addDoc, updateDoc, Firestore, deleteDoc } from '@angular/fire/firestore';
 import { ref, uploadBytes, Storage, getDownloadURL } from '@angular/fire/storage';
 
 
@@ -97,5 +97,8 @@ export class ProductAdminService {
     if (!product.id) {
       throw new Error('El producto no tiene id.');
     }
+    const productRef = doc(this.firestore, `products/${product.id}`);
+    await deleteDoc(productRef);
+    
   }
 }

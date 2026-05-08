@@ -42,7 +42,7 @@ export const sendContact = onRequest(
         }
         // Honeypot anti-bots
         if (honeypot) {
-          res.status(400).send("Bot detectado");
+          res.status(400).send({error: "Bot detectado"});
           return;
         }
         // Sanitización de datos

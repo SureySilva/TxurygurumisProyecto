@@ -28,7 +28,7 @@ export class PatternsComponent {
     return rows;
   }
   viewPattern(item: Pattern) {
-   this.router.navigate(['/pattern-info', item.id], {
+   this.router.navigate(['/patrones', item.id], {
     state: { pattern: item }
   });
   }

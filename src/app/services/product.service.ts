@@ -38,40 +38,46 @@ export class ProductService {
    *
    * @returns Observable con la lista de productos.
    */
-  public getGalleryProducts(): Observable < Product[] > {
-  const productsRef = collection(this.firestore, 'products');
-  const galleryQuery = query(productsRef, where('showInGallery', '==', true));
+  public getGalleryProducts(): Observable<Product[]> {
+    const productsRef = collection(this.firestore, 'products');
+    const galleryQuery = query(productsRef, where('showInGallery', '==', true));
 
-  return collectionData(galleryQuery, {
-    idField: 'id'
-  }) as Observable<Product[]>;
-}
+    return collectionData(galleryQuery, {
+      idField: 'id'
+    }) as Observable<Product[]>;
+  }
 
   /**
    * Obtiene los productos que están a la venta.
    *
    * @returns Observable con la lista de productos en tienda.
    */
-  public getStoreProducts(): Observable < Product[] > {
-  const productsRef = collection(this.firestore, 'products');
-  const storeQuery = query(productsRef, where('isForSale', '==', true));
+  public getStoreProducts(): Observable<Product[]> {
+    const productsRef = collection(this.firestore, 'products');
+    const storeQuery = query(productsRef, where('isForSale', '==', true));
 
-  return collectionData(storeQuery, {
-    idField: 'id'
-  }) as Observable<Product[]>;
-}
+    return collectionData(storeQuery, {
+      idField: 'id'
+    }) as Observable<Product[]>;
+  }
 
-getLatest(count: number = 2): Observable < Product[] > {
-  const patternsRef = collection(this.firestore, 'products');
+  /**
+   * Obtiene los productos más recientes que están a la venta, ordenados por fecha de creación.
+   *
+   * @param count Número de productos a obtener (por defecto 2).
+   * @returns Observable con la lista de productos más recientes.
+   */
+  getLatest(count: number = 2): Observable<Product[]> {
+    const patternsRef = collection(this.firestore, 'products');
 
-  const q = query(
-    patternsRef,
-    where('isForSale', '==', true),
-    orderBy('createdAt', 'desc'),
-    limit(count)
-  );
+    const q = query(
+      patternsRef,
+      where('isForSale', '==', true),
+      orderBy('createdAt', 'desc'),
+      limit(count)
+    );
 
-  return collectionData(q, { idField: 'id' }) as Observable<Product[]>;
-}
+    return collectionData(q, { idField: 'id' }) as Observable<Product[]>;
+  }
 
 }

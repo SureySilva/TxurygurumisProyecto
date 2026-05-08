@@ -22,6 +22,10 @@ import { ShopComponent } from './features/shop/shop.component';
 import { GalleryComponent } from './features/gallery/gallery.component';
 import { GuidesComponent } from './features/guides/guides.component';
 import { HomeComponent } from './features/home/home.component';
+import { PrivacyPolicyComponent } from './features/legal/privacy-policy/privacy-policy.component';
+import { CookiesPolicyComponent } from './features/legal/cookies-policy/cookies-policy.component';
+import { LegalNoticeComponent } from './features/legal/legal-notice/legal-notice.component';
+import { PurchaseConditionsComponent } from './features/legal/purchase-conditions/purchase-conditions.component';
 
 export const routes: Routes = [{
   path: '', component: HomeComponent
@@ -39,17 +43,21 @@ export const routes: Routes = [{
   path: 'galeria', component: GalleryComponent
 },
 {
-  path: 'tienda', component: ShopComponent
+  path: 'tienda', 
+  children: [
+    { path: '', component: ShopComponent },
+    { path: 'producto/:id', component: ProductComponent },
+  ]
 },
 {
   path: 'carrito', component: CartComponent
 },
 {
-  path: 'patrones', component: PatternsComponent
-},
-{ path: 'product/:id', component: ProductComponent },
-{
-  path: 'pattern-info/:id', component: PatternInfoComponent
+  path: 'patrones',
+  children: [
+    { path: '', component: PatternsComponent },
+    { path: ':id', component: PatternInfoComponent },
+  ]
 },
 {
   path: 'contacto', component: ContactComponent
@@ -58,7 +66,7 @@ export const routes: Routes = [{
   path: 'login', component: LoginComponent
 },
 {
-  path: 'register', component: RegisterComponent
+  path: 'registro', component: RegisterComponent
 },
 {
   path: 'reset-password', component: ResetPasswordComponent
@@ -69,7 +77,7 @@ export const routes: Routes = [{
 {
   path: 'mis-pedidos',component: OrdersComponent
 },
-  {
+{
   path: 'admin',
   canActivate: [authGuard, adminGuard],
   children: [
@@ -83,5 +91,17 @@ export const routes: Routes = [{
     { path: 'patrones/editar/:id', component: AdminPatternFormComponent },
     { path: 'pedidos', component: AdminOrdersComponent }
   ]
-}
+},
+{
+    path: 'privacidad', component: PrivacyPolicyComponent
+  },
+  {
+    path: 'cookies', component: CookiesPolicyComponent
+  },
+  {
+    path: 'aviso-legal', component: LegalNoticeComponent
+  },
+  {
+    path: 'condiciones-compra', component: PurchaseConditionsComponent
+  }
 ];

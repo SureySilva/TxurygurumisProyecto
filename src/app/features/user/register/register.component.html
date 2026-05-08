@@ -14,6 +14,11 @@
     <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" required minlength="6" maxlength="20">
   </div>
   <button type="submit">Registrar</button>
+  <label class="legal-check">
+  <input type="checkbox" required name="acceptPrivacy" [(ngModel)]="acceptPrivacy">
+  He leído y acepto la
+  <a [routerLink]="['/privacidad']" target="_blank">política de privacidad</a>
+</label>
   <div class="popup" *ngIf="showMessage">
     Usuario registrado correctamente. Comprueba tu correo para verificar tu cuenta.
   </div>

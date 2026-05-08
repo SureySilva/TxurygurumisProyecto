@@ -76,7 +76,6 @@ export const deleteOwnAccount = onCall(async (request) => {
       message: "Cuenta eliminada correctamente.",
     };
   } catch (error) {
-
     throw new HttpsError(
       "internal",
       "No se pudo eliminar la cuenta."
